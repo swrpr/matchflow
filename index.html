@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MatchFlow - Comprehensive Profile Viewer</title>
+    <title>MatchFlow - Simple & Clean</title>
     <style>
         * {
             margin: 0;
@@ -11,525 +11,294 @@
             box-sizing: border-box;
         }
 
-        :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --success-color: #27ae60;
-            --warning-color: #f39c12;
-            --danger-color: #e74c3c;
-            --info-color: #8e44ad;
-            --background: #ecf0f1;
-            --card-background: #ffffff;
-            --text-primary: #2c3e50;
-            --text-secondary: #7f8c8d;
-            --border-color: #bdc3c7;
-            --hover-color: #f8f9fa;
-        }
-
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--background);
-            color: var(--text-primary);
-            line-height: 1.6;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.4;
         }
 
         .header {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 20px 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: white;
+            padding: 15px 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             position: sticky;
             top: 0;
-            z-index: 1000;
+            z-index: 100;
         }
 
         .header-content {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
         }
 
-        .logo h1 {
-            font-size: 28px;
-            margin-bottom: 5px;
-        }
-
-        .logo p {
-            opacity: 0.9;
-            font-size: 14px;
-        }
-
-        .header-stats {
-            display: flex;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 24px;
+        .logo {
+            font-size: 20px;
             font-weight: bold;
-            display: block;
+            color: #007AFF;
         }
 
-        .stat-label {
-            font-size: 12px;
-            opacity: 0.8;
+        .stats {
+            display: flex;
+            gap: 20px;
+            font-size: 14px;
+            color: #666;
         }
 
         .controls {
             background: white;
             padding: 20px;
             margin: 20px auto;
-            max-width: 1400px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 1200px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
-        .control-row {
-            display: flex;
+        .filters {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto;
             gap: 15px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-            align-items: center;
+            align-items: end;
         }
 
-        .control-group {
-            flex: 1;
-            min-width: 200px;
-        }
-
-        .control-label {
+        .filter-group label {
             display: block;
             margin-bottom: 5px;
-            font-weight: 600;
-            color: var(--text-primary);
-            font-size: 14px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #555;
         }
 
-        .control-input, .control-select {
+        .filter-group input, .filter-group select {
             width: 100%;
-            padding: 10px 15px;
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
             font-size: 14px;
-            transition: all 0.2s;
-            background: white;
         }
 
-        .control-input:focus, .control-select:focus {
+        .filter-group input:focus, .filter-group select:focus {
             outline: none;
-            border-color: var(--secondary-color);
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            border-color: #007AFF;
         }
 
-        .age-inputs {
-            display: flex;
-            gap: 10px;
-        }
-
-        .age-inputs input {
-            flex: 1;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 10px 20px;
+        .clear-btn {
+            padding: 8px 16px;
+            background: #666;
+            color: white;
             border: none;
             border-radius: 6px;
             cursor: pointer;
             font-size: 14px;
-            font-weight: 500;
-            transition: all 0.2s;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
         }
 
-        .btn-primary {
-            background: var(--secondary-color);
-            color: white;
+        .clear-btn:hover {
+            background: #555;
         }
 
-        .btn-secondary {
-            background: var(--text-secondary);
-            color: white;
-        }
-
-        .btn-success {
-            background: var(--success-color);
-            color: white;
-        }
-
-        .btn-warning {
-            background: var(--warning-color);
-            color: white;
-        }
-
-        .btn-danger {
-            background: var(--danger-color);
-            color: white;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-
-        .profiles-container {
-            max-width: 1400px;
+        .container {
+            max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
 
-        .profiles-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-
-        .profile-card {
-            background: var(--card-background);
-            border-radius: 15px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        .profiles-table {
+            background: white;
+            border-radius: 8px;
             overflow: hidden;
-            transition: all 0.3s ease;
-            position: relative;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
-        .profile-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-        }
-
-        .profile-header {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 20px;
-            position: relative;
-        }
-
-        .profile-id {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            background: rgba(255,255,255,0.2);
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .source-badge {
-            position: absolute;
-            top: 15px;
-            left: 20px;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 11px;
-            font-weight: bold;
-        }
-
-        .source-pdf {
-            background: rgba(231, 76, 60, 0.2);
-            color: #fff;
-        }
-
-        .source-matdb {
-            background: rgba(142, 68, 173, 0.2);
-            color: #fff;
-        }
-
-        .profile-main {
-            display: flex;
-            gap: 20px;
-            align-items: flex-start;
-            margin-top: 15px;
-        }
-
-        .profile-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            font-weight: bold;
-            border: 3px solid rgba(255,255,255,0.3);
-            flex-shrink: 0;
-        }
-
-        .profile-basic {
-            flex: 1;
-        }
-
-        .profile-name {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
-
-        .profile-subtitle {
-            font-size: 16px;
-            opacity: 0.9;
-            margin-bottom: 10px;
-        }
-
-        .quick-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .quick-tag {
-            background: rgba(255,255,255,0.2);
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 12px;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-
-        .profile-body {
-            padding: 25px;
-        }
-
-        .data-grid {
+        .table-header {
+            background: #f8f9fa;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
+            grid-template-columns: 150px 1fr 80px 120px 150px 200px 100px;
+            padding: 12px 15px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #555;
+            border-bottom: 1px solid #eee;
         }
 
-        .data-section {
-            background: var(--hover-color);
-            border-radius: 10px;
+        .profile-row {
+            display: grid;
+            grid-template-columns: 150px 1fr 80px 120px 150px 200px 100px;
             padding: 15px;
-            border-left: 4px solid var(--secondary-color);
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.2s;
+            cursor: pointer;
         }
 
-        .section-title {
-            font-size: 16px;
-            font-weight: bold;
-            color: var(--primary-color);
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .profile-row:hover {
+            background: #f8f9fa;
         }
 
-        .data-items {
-            display: grid;
-            gap: 8px;
-        }
-
-        .data-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            padding: 6px 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .data-item:last-child {
+        .profile-row:last-child {
             border-bottom: none;
         }
 
-        .data-label {
+        .profile-name {
             font-weight: 600;
-            color: var(--text-secondary);
-            min-width: 100px;
+            color: #333;
+            margin-bottom: 3px;
+        }
+
+        .profile-id {
+            font-size: 11px;
+            color: #999;
+            font-family: monospace;
+        }
+
+        .profile-basic {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .profile-contact {
             font-size: 13px;
         }
 
-        .data-value {
-            flex: 1;
-            color: var(--text-primary);
-            font-size: 13px;
-            word-break: break-word;
-        }
-
-        .data-value.empty {
-            color: var(--text-secondary);
-            font-style: italic;
-        }
-
-        .contact-item {
-            background: var(--secondary-color);
-            color: white;
-            padding: 8px 12px;
-            border-radius: 8px;
-            margin: 4px 0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-        }
-
-        .contact-item a {
-            color: white;
+        .contact-link {
+            color: #007AFF;
             text-decoration: none;
-            font-weight: 500;
+            margin-right: 8px;
         }
 
-        .contact-item a:hover {
+        .contact-link:hover {
             text-decoration: underline;
         }
 
-        .preferences-section {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 15px;
-        }
-
-        .preferences-title {
-            font-weight: bold;
-            color: #856404;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .preferences-text {
-            color: #856404;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-
-        .notes-section {
-            background: #d1ecf1;
-            border: 1px solid #bee5eb;
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 15px;
-        }
-
-        .notes-title {
-            font-weight: bold;
-            color: #0c5460;
-            margin-bottom: 10px;
-        }
-
-        .notes-list {
-            display: grid;
-            gap: 8px;
-        }
-
-        .note-item {
-            background: white;
-            padding: 8px 12px;
-            border-radius: 6px;
+        .profile-location {
             font-size: 13px;
-            color: #0c5460;
-            border-left: 3px solid var(--info-color);
+            color: #666;
         }
 
-        .tagging-section {
+        .profile-work {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .tag-buttons {
             display: flex;
-            justify-content: center;
-            gap: 15px;
-            padding: 20px;
-            background: var(--hover-color);
-            border-top: 1px solid var(--border-color);
+            gap: 6px;
         }
 
         .tag-btn {
-            width: 50px;
-            height: 50px;
+            width: 28px;
+            height: 28px;
             border: none;
             border-radius: 50%;
-            font-size: 20px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            font-size: 14px;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
         .tag-btn.reject {
-            background: var(--danger-color);
+            background: #ff3b30;
             color: white;
         }
 
         .tag-btn.maybe {
-            background: var(--warning-color);
+            background: #ff9500;
             color: white;
         }
 
         .tag-btn.like {
-            background: var(--success-color);
+            background: #34c759;
             color: white;
+        }
+
+        .tag-btn:not(.active) {
+            background: #f0f0f0;
+            color: #999;
         }
 
         .tag-btn:hover {
             transform: scale(1.1);
         }
 
-        .tag-btn.active {
-            transform: scale(1.1);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        .source-badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 500;
+            margin-bottom: 2px;
         }
 
-        .tagged-indicator {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: bold;
-            color: white;
-            border: 2px solid white;
+        .source-pdf {
+            background: #ffebee;
+            color: #c62828;
         }
 
-        .tagged-like {
-            background: var(--success-color);
+        .source-matdb {
+            background: #f3e5f5;
+            color: #7b1fa2;
         }
 
-        .tagged-maybe {
-            background: var(--warning-color);
+        .expanded-row {
+            grid-column: 1 / -1;
+            background: #f8f9fa;
+            padding: 20px;
+            border-top: 1px solid #eee;
         }
 
-        .tagged-reject {
-            background: var(--danger-color);
+        .expanded-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
         }
 
-        .no-results {
-            text-align: center;
-            padding: 60px 20px;
-            color: var(--text-secondary);
-            background: white;
-            border-radius: 15px;
-            margin: 20px 0;
-        }
-
-        .no-results h3 {
-            font-size: 24px;
+        .detail-section h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #555;
             margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        .detail-item {
+            display: flex;
+            margin-bottom: 6px;
+        }
+
+        .detail-label {
+            min-width: 100px;
+            font-size: 13px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .detail-value {
+            font-size: 13px;
+            color: #333;
+        }
+
+        .preferences-section {
+            grid-column: 1 / -1;
+            margin-top: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 6px;
+            border-left: 3px solid #007AFF;
+        }
+
+        .preferences-section h4 {
+            color: #007AFF;
+            margin-bottom: 8px;
+        }
+
+        .preferences-text {
+            font-size: 13px;
+            line-height: 1.5;
+            color: #555;
         }
 
         .pagination {
@@ -538,24 +307,22 @@
             align-items: center;
             gap: 10px;
             padding: 20px;
-            background: white;
-            border-radius: 10px;
             margin: 20px 0;
         }
 
         .pagination button {
             padding: 8px 16px;
-            border: 1px solid var(--border-color);
+            border: 1px solid #ddd;
             background: white;
             border-radius: 6px;
             cursor: pointer;
-            transition: all 0.2s;
+            font-size: 14px;
         }
 
-        .pagination button:hover {
-            background: var(--secondary-color);
+        .pagination button:hover:not(:disabled) {
+            background: #007AFF;
             color: white;
-            border-color: var(--secondary-color);
+            border-color: #007AFF;
         }
 
         .pagination button:disabled {
@@ -563,90 +330,37 @@
             cursor: not-allowed;
         }
 
-        .pagination span {
-            margin: 0 10px;
-            font-weight: 500;
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            background: white;
+            border-radius: 8px;
+            margin: 20px 0;
         }
 
-        @media (max-width: 768px) {
-            .header-content {
-                text-align: center;
-                flex-direction: column;
-            }
-
-            .header-stats {
-                justify-content: center;
-            }
-
-            .control-row {
-                flex-direction: column;
-            }
-
-            .profiles-grid {
+        @media (max-width: 1024px) {
+            .filters {
                 grid-template-columns: 1fr;
+                gap: 10px;
             }
-
-            .data-grid {
+            
+            .table-header, .profile-row {
                 grid-template-columns: 1fr;
+                gap: 10px;
             }
-
-            .profile-main {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .action-buttons {
-                justify-content: center;
+            
+            .expanded-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
             }
         }
 
         .loading {
             text-align: center;
             padding: 40px;
-            font-size: 18px;
-            color: var(--text-secondary);
-        }
-
-        .export-section {
-            background: #e8f5e8;
-            border: 1px solid #c3e6c3;
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .export-title {
-            font-weight: bold;
-            color: #155724;
-            margin-bottom: 10px;
-        }
-
-        .quality-indicator {
-            position: absolute;
-            bottom: 15px;
-            right: 20px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            background: rgba(255,255,255,0.2);
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 12px;
-        }
-
-        .quality-bar {
-            width: 50px;
-            height: 4px;
-            background: rgba(255,255,255,0.3);
-            border-radius: 2px;
-            overflow: hidden;
-        }
-
-        .quality-fill {
-            height: 100%;
-            background: #27ae60;
-            transition: width 0.3s ease;
+            font-size: 16px;
+            color: #666;
         }
     </style>
 </head>
@@ -654,122 +368,80 @@
     <!-- Header -->
     <div class="header">
         <div class="header-content">
-            <div class="logo">
-                <h1>MatchFlow</h1>
-                <p>Comprehensive Matrimony Profile Database</p>
-            </div>
-            <div class="header-stats">
-                <div class="stat-item">
-                    <span class="stat-value" id="totalCount">-</span>
-                    <span class="stat-label">Total Profiles</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-value" id="filteredCount">-</span>
-                    <span class="stat-label">Filtered</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-value" id="likedCount">0</span>
-                    <span class="stat-label">Liked</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-value" id="maybeCount">0</span>
-                    <span class="stat-label">Maybe</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-value" id="rejectedCount">0</span>
-                    <span class="stat-label">Rejected</span>
-                </div>
+            <div class="logo">MatchFlow</div>
+            <div class="stats">
+                <span>Total: <strong id="totalCount">-</strong></span>
+                <span>Showing: <strong id="filteredCount">-</strong></span>
+                <span>❤️ <strong id="likedCount">0</strong></span>
+                <span>⭐ <strong id="maybeCount">0</strong></span>
+                <span>❌ <strong id="rejectedCount">0</strong></span>
             </div>
         </div>
     </div>
 
     <!-- Controls -->
     <div class="controls">
-        <div class="control-row">
-            <div class="control-group">
-                <label class="control-label">🔍 Search Everything</label>
-                <input type="text" class="control-input" id="searchInput" placeholder="Name, profession, location, preferences, notes...">
+        <div class="filters">
+            <div class="filter-group">
+                <label>Search</label>
+                <input type="text" id="searchInput" placeholder="Name, profession, location...">
             </div>
-            <div class="control-group">
-                <label class="control-label">📁 Source File</label>
-                <select class="control-select" id="sourceFilter">
+            <div class="filter-group">
+                <label>Source</label>
+                <select id="sourceFilter">
                     <option value="">All Sources</option>
                 </select>
             </div>
-            <div class="control-group">
-                <label class="control-label">👥 Gender</label>
-                <select class="control-select" id="genderFilter">
-                    <option value="">All Genders</option>
+            <div class="filter-group">
+                <label>Gender</label>
+                <select id="genderFilter">
+                    <option value="">All</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                 </select>
             </div>
-        </div>
-
-        <div class="control-row">
-            <div class="control-group">
-                <label class="control-label">🎂 Age Range</label>
-                <div class="age-inputs">
-                    <input type="number" class="control-input" id="minAge" placeholder="Min" min="18" max="100">
-                    <input type="number" class="control-input" id="maxAge" placeholder="Max" min="18" max="100">
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label">🌍 Country</label>
-                <select class="control-select" id="countryFilter">
+            <div class="filter-group">
+                <label>Country</label>
+                <select id="countryFilter">
                     <option value="">All Countries</option>
                 </select>
             </div>
-            <div class="control-group">
-                <label class="control-label">💍 Marital Status</label>
-                <select class="control-select" id="maritalFilter">
-                    <option value="">All Status</option>
-                    <option value="Single">Single</option>
-                    <option value="Never Married">Never Married</option>
-                    <option value="Divorced">Divorced</option>
-                    <option value="Widowed">Widowed</option>
+            <div class="filter-group">
+                <label>Tagged</label>
+                <select id="tagFilter">
+                    <option value="">All</option>
+                    <option value="like">❤️ Liked</option>
+                    <option value="maybe">⭐ Maybe</option>
+                    <option value="reject">❌ Rejected</option>
+                    <option value="untagged">Untagged</option>
                 </select>
             </div>
-        </div>
-
-        <div class="control-row">
-            <div class="control-group">
-                <label class="control-label">🏛️ Community</label>
-                <select class="control-select" id="communityFilter">
-                    <option value="">All Communities</option>
-                </select>
-            </div>
-            <div class="control-group">
-                <label class="control-label">🏷️ Tagged Status</label>
-                <select class="control-select" id="tagFilter">
-                    <option value="">All Profiles</option>
-                    <option value="like">❤️ Liked Only</option>
-                    <option value="maybe">⭐ Maybe Only</option>
-                    <option value="reject">❌ Rejected Only</option>
-                    <option value="untagged">📝 Untagged Only</option>
-                </select>
-            </div>
-            <div class="action-buttons">
-                <button class="btn btn-secondary" onclick="clearAllFilters()">🔄 Clear Filters</button>
-                <button class="btn btn-primary" onclick="exportTaggedProfiles()">📊 Export Tagged</button>
-                <button class="btn btn-success" onclick="exportAllData()">💾 Export All</button>
-            </div>
+            <button class="clear-btn" onclick="clearFilters()">Clear</button>
         </div>
     </div>
 
-    <!-- Profiles Container -->
-    <div class="profiles-container">
-        <div id="loadingMessage" class="loading">
-            🔄 Loading comprehensive profile data...
-        </div>
+    <!-- Main Content -->
+    <div class="container">
+        <div id="loadingMessage" class="loading">Loading profiles...</div>
         
-        <div id="profilesGrid" class="profiles-grid" style="display: none;">
-            <!-- Profiles will be loaded here -->
+        <div id="profilesTable" class="profiles-table" style="display: none;">
+            <div class="table-header">
+                <div>Name & ID</div>
+                <div>Basic Info</div>
+                <div>Age</div>
+                <div>Contact</div>
+                <div>Location</div>
+                <div>Profession</div>
+                <div>Actions</div>
+            </div>
+            <div id="profilesBody">
+                <!-- Profiles will be loaded here -->
+            </div>
         </div>
 
         <div id="noResults" class="no-results" style="display: none;">
             <h3>No profiles found</h3>
-            <p>Try adjusting your filters to see more results</p>
+            <p>Try adjusting your filters</p>
         </div>
 
         <!-- Pagination -->
@@ -781,98 +453,71 @@
     </div>
 
     <script>
-        // Global variables
         let allProfiles = [];
         let filteredProfiles = [];
         let tags = JSON.parse(localStorage.getItem('matrimony-tags') || '{}');
         let currentPage = 1;
-        const profilesPerPage = 10;
+        let expandedRow = null;
+        const profilesPerPage = 25;
 
-        // Initialize the application
+        // Initialize app
         async function initApp() {
-            showLoading(true);
-            
             try {
                 await loadProfiles();
-                populateFilterOptions();
+                populateFilters();
                 setupEventListeners();
                 applyFilters();
                 updateStats();
                 showLoading(false);
             } catch (error) {
-                console.error('Failed to initialize app:', error);
-                document.getElementById('loadingMessage').innerHTML = 
-                    '❌ Failed to load profiles. Please check your data file.';
+                console.error('Failed to load:', error);
+                document.getElementById('loadingMessage').innerHTML = 'Failed to load profiles.';
             }
         }
 
-        // Load profiles from JSON
         async function loadProfiles() {
-            try {
-                const response = await fetch('data/profiles.json');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                allProfiles = await response.json();
-                console.log(`Loaded ${allProfiles.length} profiles`);
-            } catch (error) {
-                console.error('Error loading profiles:', error);
-                throw error;
-            }
+            const response = await fetch('data/profiles.json');
+            allProfiles = await response.json();
+            console.log(`Loaded ${allProfiles.length} profiles`);
         }
 
-        // Show/hide loading state
         function showLoading(show) {
             document.getElementById('loadingMessage').style.display = show ? 'block' : 'none';
-            document.getElementById('profilesGrid').style.display = show ? 'none' : 'grid';
+            document.getElementById('profilesTable').style.display = show ? 'none' : 'block';
             document.getElementById('pagination').style.display = show ? 'none' : 'flex';
         }
 
-        // Populate filter dropdown options
-        function populateFilterOptions() {
-            // Source files
-            const sources = [...new Set(allProfiles.map(p => p.source_system).filter(Boolean))].sort();
+        function populateFilters() {
+            // Sources
+            const sources = [...new Set(allProfiles.map(p => p.source_system).filter(Boolean))];
             populateSelect('sourceFilter', sources);
 
             // Countries
             const countries = [...new Set(allProfiles.map(p => p.country).filter(Boolean))].sort();
             populateSelect('countryFilter', countries);
-
-            // Communities
-            const communities = [...new Set(allProfiles.map(p => p.community_sect).filter(Boolean))].sort();
-            populateSelect('communityFilter', communities);
         }
 
-        // Helper to populate select elements
-        function populateSelect(selectId, options) {
-            const select = document.getElementById(selectId);
+        function populateSelect(id, options) {
+            const select = document.getElementById(id);
             options.forEach(option => {
-                const optionElement = document.createElement('option');
-                optionElement.value = option;
-                optionElement.textContent = option;
-                select.appendChild(optionElement);
+                const opt = document.createElement('option');
+                opt.value = option;
+                opt.textContent = option;
+                select.appendChild(opt);
             });
         }
 
-        // Setup event listeners
         function setupEventListeners() {
-            // Filter inputs
             document.getElementById('searchInput').addEventListener('input', debounce(applyFilters, 300));
             document.getElementById('sourceFilter').addEventListener('change', applyFilters);
             document.getElementById('genderFilter').addEventListener('change', applyFilters);
-            document.getElementById('minAge').addEventListener('input', debounce(applyFilters, 300));
-            document.getElementById('maxAge').addEventListener('input', debounce(applyFilters, 300));
             document.getElementById('countryFilter').addEventListener('change', applyFilters);
-            document.getElementById('maritalFilter').addEventListener('change', applyFilters);
-            document.getElementById('communityFilter').addEventListener('change', applyFilters);
             document.getElementById('tagFilter').addEventListener('change', applyFilters);
-
-            // Pagination
+            
             document.getElementById('prevPage').addEventListener('click', () => changePage(-1));
             document.getElementById('nextPage').addEventListener('click', () => changePage(1));
         }
 
-        // Debounce function for search input
         function debounce(func, wait) {
             let timeout;
             return function executedFunction(...args) {
@@ -885,41 +530,19 @@
             };
         }
 
-        // Apply all filters
         function applyFilters() {
             const search = document.getElementById('searchInput').value.toLowerCase();
             const source = document.getElementById('sourceFilter').value;
             const gender = document.getElementById('genderFilter').value;
-            const minAge = parseInt(document.getElementById('minAge').value) || 0;
-            const maxAge = parseInt(document.getElementById('maxAge').value) || 999;
             const country = document.getElementById('countryFilter').value;
-            const marital = document.getElementById('maritalFilter').value;
-            const community = document.getElementById('communityFilter').value;
             const tagStatus = document.getElementById('tagFilter').value;
 
             filteredProfiles = allProfiles.filter(profile => {
-                // Search filter (searches across all fields)
-                if (search && !searchAllFields(profile, search)) return false;
-                
-                // Source filter
+                if (search && !searchProfile(profile, search)) return false;
                 if (source && profile.source_system !== source) return false;
-                
-                // Gender filter
                 if (gender && profile.gender !== gender) return false;
-                
-                // Age filter
-                if (profile.age && (profile.age < minAge || profile.age > maxAge)) return false;
-                
-                // Country filter
                 if (country && profile.country !== country) return false;
                 
-                // Marital status filter
-                if (marital && profile.marital_status !== marital) return false;
-                
-                // Community filter
-                if (community && profile.community_sect !== community) return false;
-                
-                // Tag filter
                 if (tagStatus) {
                     const profileTag = tags[profile.review_id];
                     if (tagStatus === 'untagged' && profileTag) return false;
@@ -930,289 +553,176 @@
             });
 
             currentPage = 1;
+            expandedRow = null;
             displayProfiles();
             updateStats();
             updatePagination();
         }
 
-        // Search across all profile fields
-        function searchAllFields(profile, search) {
-            const searchableText = Object.values(profile)
-                .filter(value => value !== null && value !== undefined)
-                .join(' ')
-                .toLowerCase();
+        function searchProfile(profile, search) {
+            const searchText = [
+                profile.full_name,
+                profile.profession_job,
+                profile.qualification_education,
+                profile.city,
+                profile.country,
+                profile.community_sect,
+                profile.partner_preferences,
+                profile.email,
+                profile.phone_primary
+            ].filter(Boolean).join(' ').toLowerCase();
             
-            return searchableText.includes(search);
+            return searchText.includes(search);
         }
 
-        // Display profiles for current page
         function displayProfiles() {
-            const profilesGrid = document.getElementById('profilesGrid');
+            const tbody = document.getElementById('profilesBody');
             const noResults = document.getElementById('noResults');
             
             if (filteredProfiles.length === 0) {
-                profilesGrid.style.display = 'none';
+                document.getElementById('profilesTable').style.display = 'none';
                 noResults.style.display = 'block';
                 return;
             }
 
-            profilesGrid.style.display = 'grid';
+            document.getElementById('profilesTable').style.display = 'block';
             noResults.style.display = 'none';
 
             const startIndex = (currentPage - 1) * profilesPerPage;
             const endIndex = startIndex + profilesPerPage;
             const profilesToShow = filteredProfiles.slice(startIndex, endIndex);
 
-            profilesGrid.innerHTML = profilesToShow.map(profile => createProfileCard(profile)).join('');
+            tbody.innerHTML = profilesToShow.map((profile, index) => {
+                const globalIndex = startIndex + index;
+                return createProfileRow(profile, globalIndex);
+            }).join('');
         }
 
-        // Create comprehensive profile card HTML
-        function createProfileCard(profile) {
-            const profileTag = tags[profile.review_id];
-            const taggedIndicator = profileTag ? 
-                `<div class="tagged-indicator tagged-${profileTag}">
-                    ${profileTag === 'like' ? '❤️' : profileTag === 'maybe' ? '⭐' : '❌'}
-                </div>` : '';
+        function createProfileRow(profile, index) {
+            const tag = tags[profile.review_id];
+            const sourceBadge = profile.source_system === 'PDF_RKMS' ? 
+                '<span class="source-badge source-pdf">PDF</span>' : 
+                '<span class="source-badge source-matdb">MATDB</span>';
 
-            // Calculate data quality score
-            const qualityScore = calculateQualityScore(profile);
-            
             return `
-                <div class="profile-card">
-                    ${taggedIndicator}
-                    
-                    <div class="profile-header">
-                        <div class="source-badge ${profile.source_system === 'PDF_RKMS' ? 'source-pdf' : 'source-matdb'}">
-                            ${profile.source_system === 'PDF_RKMS' ? '📄 PDF' : '📊 MATDB'}
-                        </div>
+                <div class="profile-row" onclick="toggleExpanded(${index})">
+                    <div>
+                        <div class="profile-name">${profile.full_name || 'Name not provided'}</div>
                         <div class="profile-id">${profile.review_id}</div>
-                        
-                        <div class="profile-main">
-                            <div class="profile-avatar">
-                                ${getInitials(profile.full_name)}
-                            </div>
-                            <div class="profile-basic">
-                                <div class="profile-name">${profile.full_name || 'Name not provided'}</div>
-                                <div class="profile-subtitle">
-                                    ${profile.age ? `${profile.age} years` : 'Age not specified'} • 
-                                    ${profile.gender || 'Gender not specified'}
-                                </div>
-                                <div class="quick-tags">
-                                    ${profile.city ? `<span class="quick-tag">📍 ${profile.city}</span>` : ''}
-                                    ${profile.country ? `<span class="quick-tag">🌍 ${profile.country}</span>` : ''}
-                                    ${profile.profession_job ? `<span class="quick-tag">💼 ${profile.profession_job}</span>` : ''}
-                                    ${profile.marital_status ? `<span class="quick-tag">💍 ${profile.marital_status}</span>` : ''}
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="quality-indicator">
-                            <span>Data Quality:</span>
-                            <div class="quality-bar">
-                                <div class="quality-fill" style="width: ${qualityScore}%"></div>
-                            </div>
-                            <span>${qualityScore}%</span>
-                        </div>
+                        ${sourceBadge}
                     </div>
-
-                    <div class="profile-body">
-                        <div class="data-grid">
-                            <!-- Personal Information -->
-                            <div class="data-section">
-                                <div class="section-title">👤 Personal Information</div>
-                                <div class="data-items">
-                                    ${createDataItem('Full Name', profile.full_name)}
-                                    ${createDataItem('Date of Birth', profile.date_of_birth)}
-                                    ${createDataItem('Time of Birth', profile.time_of_birth)}
-                                    ${createDataItem('Place of Birth', profile.place_of_birth)}
-                                    ${createDataItem('Age', profile.age)}
-                                    ${createDataItem('Height', profile.height_display)}
-                                    ${createDataItem('Gender', profile.gender)}
-                                </div>
-                            </div>
-
-                            <!-- Contact Information -->
-                            <div class="data-section">
-                                <div class="section-title">📞 Contact Information</div>
-                                <div class="data-items">
-                                    ${profile.phone_primary ? 
-                                        `<div class="contact-item">📱 <a href="tel:${profile.phone_primary}">${profile.phone_primary}</a></div>` : 
-                                        createDataItem('Primary Phone', null)}
-                                    ${profile.phone_secondary ? 
-                                        `<div class="contact-item">📞 <a href="tel:${profile.phone_secondary}">${profile.phone_secondary}</a></div>` : 
-                                        createDataItem('Secondary Phone', null)}
-                                    ${profile.email ? 
-                                        `<div class="contact-item">✉️ <a href="mailto:${profile.email}">${profile.email}</a></div>` : 
-                                        createDataItem('Email', null)}
-                                    ${createDataItem('Address', profile.address)}
-                                    ${createDataItem('City', profile.city)}
-                                    ${createDataItem('Country', profile.country)}
-                                </div>
-                            </div>
-
-                            <!-- Family Information -->
-                            <div class="data-section">
-                                <div class="section-title">👨‍👩‍👧‍👦 Family Information</div>
-                                <div class="data-items">
-                                    ${createDataItem('Father Name', profile.father_name)}
-                                    ${createDataItem('Mother Name', profile.mother_name)}
-                                    ${createDataItem('Brothers', profile.brothers_count)}
-                                    ${createDataItem('Sisters', profile.sisters_count)}
-                                    ${createDataItem('Community', profile.community_sect)}
-                                    ${createDataItem('Sub Community', profile.sub_community)}
-                                    ${createDataItem('Gothram/Gotra', profile.gothram_gotra)}
-                                    ${createDataItem('Mother Tongue', profile.mother_tongue)}
-                                </div>
-                            </div>
-
-                            <!-- Professional Information -->
-                            <div class="data-section">
-                                <div class="section-title">💼 Professional Information</div>
-                                <div class="data-items">
-                                    ${createDataItem('Education', profile.qualification_education)}
-                                    ${createDataItem('Profession', profile.profession_job)}
-                                    ${createDataItem('Work Location', profile.work_location)}
-                                    ${createDataItem('Annual Income', profile.annual_income)}
-                                </div>
-                            </div>
-
-                            <!-- Astrological Information -->
-                            <div class="data-section">
-                                <div class="section-title">⭐ Astrological Information</div>
-                                <div class="data-items">
-                                    ${createDataItem('Star/Nakshatra', profile.star_nakshatra)}
-                                    ${createDataItem('Rasi/Sign', profile.rasi_sign)}
-                                </div>
-                            </div>
-
-                            <!-- Status Information -->
-                            <div class="data-section">
-                                <div class="section-title">📋 Status Information</div>
-                                <div class="data-items">
-                                    ${createDataItem('Marital Status', profile.marital_status)}
-                                    ${createDataItem('Registration Date', profile.registration_date)}
-                                    ${createDataItem('Source System', profile.source_system)}
-                                    ${createDataItem('Page Number', profile.page_number)}
-                                    ${createDataItem('Extraction Confidence', profile.extraction_confidence)}
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Partner Preferences -->
-                        ${profile.partner_preferences || profile.expectations || profile.additional_details ? `
-                            <div class="preferences-section">
-                                <div class="preferences-title">💝 Partner Preferences & Expectations</div>
-                                <div class="preferences-text">
-                                    ${profile.partner_preferences || ''}
-                                    ${profile.expectations && profile.expectations !== profile.partner_preferences ? 
-                                        `<br><br><strong>Additional:</strong> ${profile.expectations}` : ''}
-                                    ${profile.additional_details && 
-                                      profile.additional_details !== profile.partner_preferences && 
-                                      profile.additional_details !== profile.expectations ? 
-                                        `<br><br><strong>Details:</strong> ${profile.additional_details}` : ''}
-                                </div>
-                            </div>
-                        ` : ''}
-
-                        <!-- Notes Section -->
-                        ${hasNotes(profile) ? `
-                            <div class="notes-section">
-                                <div class="notes-title">📝 Additional Notes & Metadata</div>
-                                <div class="notes-list">
-                                    ${generateNotesList(profile)}
-                                </div>
-                            </div>
-                        ` : ''}
+                    <div class="profile-basic">
+                        ${profile.gender || 'N/A'} • ${profile.marital_status || 'N/A'}
+                        ${profile.community_sect ? `<br><small>${profile.community_sect}</small>` : ''}
                     </div>
-
-                    <!-- Tagging Section -->
-                    <div class="tagging-section">
-                        <button class="tag-btn reject ${profileTag === 'reject' ? 'active' : ''}" 
-                                onclick="tagProfile('${profile.review_id}', 'reject')" 
-                                title="Reject">
-                            ❌
-                        </button>
-                        <button class="tag-btn maybe ${profileTag === 'maybe' ? 'active' : ''}" 
-                                onclick="tagProfile('${profile.review_id}', 'maybe')" 
-                                title="Maybe">
-                            ⭐
-                        </button>
-                        <button class="tag-btn like ${profileTag === 'like' ? 'active' : ''}" 
-                                onclick="tagProfile('${profile.review_id}', 'like')" 
-                                title="Like">
-                            ❤️
-                        </button>
+                    <div>${profile.age || 'N/A'}</div>
+                    <div class="profile-contact">
+                        ${profile.phone_primary ? `<a href="tel:${profile.phone_primary}" class="contact-link">📱</a>` : ''}
+                        ${profile.email ? `<a href="mailto:${profile.email}" class="contact-link">✉️</a>` : ''}
+                    </div>
+                    <div class="profile-location">
+                        ${profile.city || ''}${profile.city && profile.country ? ', ' : ''}${profile.country || 'N/A'}
+                    </div>
+                    <div class="profile-work">
+                        ${profile.profession_job ? `<div>${profile.profession_job}</div>` : ''}
+                        ${profile.qualification_education ? `<small>${profile.qualification_education}</small>` : ''}
+                    </div>
+                    <div class="tag-buttons" onclick="event.stopPropagation()">
+                        <button class="tag-btn reject ${tag === 'reject' ? 'active' : ''}"
+                                onclick="tagProfile('${profile.review_id}', 'reject')"
+                                title="Reject">❌</button>
+                        <button class="tag-btn maybe ${tag === 'maybe' ? 'active' : ''}"
+                                onclick="tagProfile('${profile.review_id}', 'maybe')"
+                                title="Maybe">⭐</button>
+                        <button class="tag-btn like ${tag === 'like' ? 'active' : ''}"
+                                onclick="tagProfile('${profile.review_id}', 'like')"
+                                title="Like">❤️</button>
                     </div>
                 </div>
+                ${expandedRow === index ? createExpandedRow(profile) : ''}
             `;
         }
 
-        // Create data item HTML
-        function createDataItem(label, value) {
-            const displayValue = value && value !== 'null' && value !== 'undefined' && value !== '' ? 
-                value : null;
-            
+        function createExpandedRow(profile) {
             return `
-                <div class="data-item">
-                    <div class="data-label">${label}:</div>
-                    <div class="data-value ${!displayValue ? 'empty' : ''}">
-                        ${displayValue || 'Not provided'}
+                <div class="expanded-row">
+                    <div class="expanded-content">
+                        <div class="detail-section">
+                            <h4>Personal Details</h4>
+                            ${createDetailItem('Date of Birth', profile.date_of_birth)}
+                            ${createDetailItem('Time of Birth', profile.time_of_birth)}
+                            ${createDetailItem('Place of Birth', profile.place_of_birth)}
+                            ${createDetailItem('Height', profile.height_display)}
+                            ${createDetailItem('Star/Nakshatra', profile.star_nakshatra)}
+                            ${createDetailItem('Rasi', profile.rasi_sign)}
+                        </div>
+                        
+                        <div class="detail-section">
+                            <h4>Family Details</h4>
+                            ${createDetailItem('Father', profile.father_name)}
+                            ${createDetailItem('Mother', profile.mother_name)}
+                            ${createDetailItem('Brothers', profile.brothers_count)}
+                            ${createDetailItem('Sisters', profile.sisters_count)}
+                            ${createDetailItem('Gothram', profile.gothram_gotra)}
+                            ${createDetailItem('Mother Tongue', profile.mother_tongue)}
+                        </div>
+                        
+                        <div class="detail-section">
+                            <h4>Professional Details</h4>
+                            ${createDetailItem('Education', profile.qualification_education)}
+                            ${createDetailItem('Profession', profile.profession_job)}
+                            ${createDetailItem('Work Location', profile.work_location)}
+                            ${createDetailItem('Annual Income', profile.annual_income)}
+                        </div>
+                        
+                        <div class="detail-section">
+                            <h4>Contact Information</h4>
+                            ${createDetailItem('Primary Phone', profile.phone_primary)}
+                            ${createDetailItem('Secondary Phone', profile.phone_secondary)}
+                            ${createDetailItem('Email', profile.email)}
+                            ${createDetailItem('Address', profile.address)}
+                        </div>
                     </div>
+                    
+                    ${profile.partner_preferences || profile.expectations ? `
+                        <div class="preferences-section">
+                            <h4>Partner Preferences</h4>
+                            <div class="preferences-text">
+                                ${profile.partner_preferences || profile.expectations || ''}
+                            </div>
+                        </div>
+                    ` : ''}
                 </div>
             `;
         }
 
-        // Check if profile has notes
-        function hasNotes(profile) {
-            const noteFields = ['notes_1', 'notes_2', 'notes_3', 'notes_4', 'notes_5'];
-            return noteFields.some(field => profile[field] && profile[field].trim());
+        function createDetailItem(label, value) {
+            if (!value || value === 'null' || value === 'undefined') return '';
+            return `
+                <div class="detail-item">
+                    <div class="detail-label">${label}:</div>
+                    <div class="detail-value">${value}</div>
+                </div>
+            `;
         }
 
-        // Generate notes list HTML
-        function generateNotesList(profile) {
-            const noteFields = ['notes_1', 'notes_2', 'notes_3', 'notes_4', 'notes_5'];
-            return noteFields
-                .filter(field => profile[field] && profile[field].trim())
-                .map(field => `<div class="note-item">${profile[field]}</div>`)
-                .join('');
+        function toggleExpanded(index) {
+            expandedRow = expandedRow === index ? null : index;
+            displayProfiles();
         }
 
-        // Calculate data quality score
-        function calculateQualityScore(profile) {
-            const totalFields = Object.keys(profile).length;
-            const filledFields = Object.values(profile).filter(value => 
-                value !== null && value !== undefined && value !== '' && value !== 'null'
-            ).length;
-            
-            return Math.round((filledFields / totalFields) * 100);
-        }
-
-        // Get initials from name
-        function getInitials(name) {
-            if (!name) return '?';
-            return name.split(' ')
-                .map(word => word.charAt(0))
-                .join('')
-                .toUpperCase()
-                .substring(0, 2);
-        }
-
-        // Tag profile function
         function tagProfile(reviewId, tag) {
             if (tags[reviewId] === tag) {
-                // Remove tag if clicking the same tag
                 delete tags[reviewId];
             } else {
-                // Set new tag
                 tags[reviewId] = tag;
             }
             
             localStorage.setItem('matrimony-tags', JSON.stringify(tags));
             updateStats();
-            displayProfiles(); // Refresh to show updated tag indicators
+            displayProfiles();
         }
 
-        // Update statistics
         function updateStats() {
             document.getElementById('totalCount').textContent = allProfiles.length;
             document.getElementById('filteredCount').textContent = filteredProfiles.length;
@@ -1227,16 +737,11 @@
             document.getElementById('rejectedCount').textContent = tagCounts.reject;
         }
 
-        // Pagination functions
         function updatePagination() {
             const totalPages = Math.ceil(filteredProfiles.length / profilesPerPage);
-            const prevBtn = document.getElementById('prevPage');
-            const nextBtn = document.getElementById('nextPage');
-            const pageInfo = document.getElementById('pageInfo');
-            
-            prevBtn.disabled = currentPage === 1;
-            nextBtn.disabled = currentPage === totalPages || totalPages === 0;
-            pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+            document.getElementById('prevPage').disabled = currentPage === 1;
+            document.getElementById('nextPage').disabled = currentPage === totalPages || totalPages === 0;
+            document.getElementById('pageInfo').textContent = `Page ${currentPage} of ${totalPages}`;
         }
 
         function changePage(direction) {
@@ -1245,77 +750,23 @@
             
             if (newPage >= 1 && newPage <= totalPages) {
                 currentPage = newPage;
+                expandedRow = null;
                 displayProfiles();
                 updatePagination();
-                // Scroll to top of profiles
-                document.querySelector('.profiles-container').scrollIntoView({ behavior: 'smooth' });
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         }
 
-        // Clear all filters
-        function clearAllFilters() {
+        function clearFilters() {
             document.getElementById('searchInput').value = '';
             document.getElementById('sourceFilter').value = '';
             document.getElementById('genderFilter').value = '';
-            document.getElementById('minAge').value = '';
-            document.getElementById('maxAge').value = '';
             document.getElementById('countryFilter').value = '';
-            document.getElementById('maritalFilter').value = '';
-            document.getElementById('communityFilter').value = '';
             document.getElementById('tagFilter').value = '';
-            
             applyFilters();
         }
 
-        // Export functions
-        function exportTaggedProfiles() {
-            const taggedProfiles = allProfiles.filter(profile => tags[profile.review_id]);
-            if (taggedProfiles.length === 0) {
-                alert('No tagged profiles to export');
-                return;
-            }
-            
-            const csv = convertToCSV(taggedProfiles);
-            downloadCSV(csv, 'tagged_matrimony_profiles.csv');
-        }
-
-        function exportAllData() {
-            const csv = convertToCSV(filteredProfiles);
-            downloadCSV(csv, 'all_matrimony_profiles.csv');
-        }
-
-        function convertToCSV(profiles) {
-            if (profiles.length === 0) return '';
-            
-            const headers = Object.keys(profiles[0]);
-            const csvContent = [
-                headers.join(','),
-                ...profiles.map(profile => 
-                    headers.map(header => {
-                        const value = profile[header] || '';
-                        return `"${String(value).replace(/"/g, '""')}"`;
-                    }).join(',')
-                )
-            ].join('\n');
-            
-            return csvContent;
-        }
-
-        function downloadCSV(csv, filename) {
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            const url = URL.createObjectURL(blob);
-            
-            link.setAttribute('href', url);
-            link.setAttribute('download', filename);
-            link.style.visibility = 'hidden';
-            
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-
-        // Initialize the app when page loads
+        // Initialize when page loads
         document.addEventListener('DOMContentLoaded', initApp);
     </script>
 </body>
