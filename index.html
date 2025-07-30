@@ -15,48 +15,58 @@
             font-family: Arial, sans-serif;
             background: white;
             color: #333;
-            font-size: 14px;
+            font-size: 13px;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
         }
 
         .header {
             background: #2c3e50;
             color: white;
-            padding: 15px 20px;
+            padding: 8px 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-shrink: 0;
         }
 
         .title {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
         }
 
         .stats {
             display: flex;
-            gap: 20px;
-            font-size: 14px;
+            gap: 15px;
+            font-size: 13px;
         }
 
         .controls {
             background: #ecf0f1;
-            padding: 20px;
+            padding: 10px 15px;
             border-bottom: 2px solid #bdc3c7;
+            flex-shrink: 0;
         }
 
         .search-row {
             display: flex;
-            gap: 15px;
+            gap: 10px;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 8px;
         }
 
         .search-input {
             flex: 1;
-            padding: 10px 15px;
-            font-size: 16px;
+            padding: 6px 10px;
+            font-size: 14px;
             border: 2px solid #3498db;
-            border-radius: 5px;
+            border-radius: 4px;
         }
 
         .search-input:focus {
@@ -65,29 +75,59 @@
         }
 
         .filters-row {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 8px;
+            align-items: end;
         }
 
-        .filter-select {
-            padding: 8px 12px;
-            font-size: 14px;
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-group label {
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 2px;
+            color: #2c3e50;
+        }
+
+        .filter-select, .filter-input {
+            padding: 4px 6px;
+            font-size: 12px;
             border: 1px solid #bdc3c7;
-            border-radius: 4px;
+            border-radius: 3px;
             background: white;
         }
 
+        .age-inputs {
+            display: flex;
+            gap: 4px;
+        }
+
+        .age-inputs input {
+            width: 50px;
+            text-align: center;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 6px;
+        }
+
+        .btn {
+            padding: 4px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
         .clear-btn {
-            padding: 8px 20px;
             background: #e74c3c;
             color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
         }
 
         .clear-btn:hover {
@@ -95,14 +135,8 @@
         }
 
         .export-btn {
-            padding: 8px 20px;
             background: #27ae60;
             color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
         }
 
         .export-btn:hover {
@@ -110,35 +144,38 @@
         }
 
         .table-container {
-            overflow-x: auto;
+            flex: 1;
+            overflow: auto;
             background: white;
+            position: relative;
         }
 
         .data-table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 1600px;
+            font-size: 12px;
         }
 
         .data-table th {
             background: #34495e;
             color: white;
-            padding: 12px 8px;
+            padding: 8px 6px;
             text-align: left;
             font-weight: bold;
             border-right: 1px solid #2c3e50;
             position: sticky;
             top: 0;
-            z-index: 10;
-            font-size: 13px;
+            z-index: 100;
+            font-size: 11px;
+            white-space: nowrap;
         }
 
         .data-table td {
-            padding: 10px 8px;
+            padding: 6px 6px;
             border-bottom: 1px solid #ecf0f1;
             border-right: 1px solid #ecf0f1;
             vertical-align: top;
-            font-size: 13px;
+            font-size: 12px;
         }
 
         .data-table tr:nth-child(even) {
@@ -152,24 +189,27 @@
         .name-cell {
             font-weight: bold;
             color: #2c3e50;
-            min-width: 150px;
+            min-width: 140px;
+            max-width: 140px;
         }
 
         .id-cell {
             font-family: monospace;
             color: #7f8c8d;
-            font-size: 11px;
+            font-size: 10px;
         }
 
         .contact-cell {
-            min-width: 120px;
+            min-width: 110px;
+            max-width: 110px;
         }
 
         .contact-link {
             color: #3498db;
             text-decoration: none;
             display: block;
-            margin: 2px 0;
+            margin: 1px 0;
+            font-size: 11px;
         }
 
         .contact-link:hover {
@@ -177,48 +217,59 @@
         }
 
         .profession-cell {
-            min-width: 180px;
+            min-width: 160px;
+            max-width: 160px;
+            font-size: 11px;
         }
 
         .location-cell {
-            min-width: 120px;
+            min-width: 100px;
+            max-width: 100px;
+            font-size: 11px;
         }
 
         .preferences-cell {
-            max-width: 250px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            cursor: pointer;
+            min-width: 300px;
+            max-width: 300px;
+            font-size: 11px;
+            line-height: 1.3;
+            max-height: 60px;
+            overflow-y: auto;
+            padding: 4px;
         }
 
-        .preferences-cell:hover {
-            white-space: normal;
-            overflow: visible;
-            background: #fff3cd;
-            position: relative;
-            z-index: 5;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        .preferences-cell::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .preferences-cell::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .preferences-cell::-webkit-scrollbar-thumb {
+            background: #bdc3c7;
+            border-radius: 2px;
         }
 
         .tag-cell {
             text-align: center;
-            min-width: 100px;
+            min-width: 80px;
+            max-width: 80px;
         }
 
         .tag-buttons {
             display: flex;
-            gap: 4px;
+            gap: 2px;
             justify-content: center;
         }
 
         .tag-btn {
-            width: 24px;
-            height: 24px;
+            width: 20px;
+            height: 20px;
             border: none;
-            border-radius: 3px;
+            border-radius: 2px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -250,11 +301,11 @@
 
         .source-badge {
             display: inline-block;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-size: 10px;
+            padding: 1px 4px;
+            border-radius: 2px;
+            font-size: 9px;
             font-weight: bold;
-            margin-top: 2px;
+            margin-top: 1px;
         }
 
         .source-pdf {
@@ -269,21 +320,22 @@
 
         .pagination {
             background: #ecf0f1;
-            padding: 15px 20px;
+            padding: 8px 15px;
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 10px;
             border-top: 1px solid #bdc3c7;
+            flex-shrink: 0;
         }
 
         .pagination button {
-            padding: 8px 16px;
+            padding: 4px 12px;
             border: 1px solid #bdc3c7;
             background: white;
-            border-radius: 4px;
+            border-radius: 3px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 12px;
         }
 
         .pagination button:hover:not(:disabled) {
@@ -298,41 +350,59 @@
         }
 
         .pagination-info {
-            margin: 0 20px;
+            margin: 0 15px;
             font-weight: bold;
+            font-size: 12px;
         }
 
         .no-results {
-            text-align: center;
-            padding: 60px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
             color: #7f8c8d;
-            font-size: 18px;
+            font-size: 16px;
         }
 
         .loading {
-            text-align: center;
-            padding: 60px 20px;
-            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+            font-size: 16px;
             color: #7f8c8d;
         }
 
-        .age-cell {
+        .age-cell, .height-cell {
             text-align: center;
             font-weight: bold;
-        }
-
-        .height-cell {
-            text-align: center;
+            min-width: 40px;
+            max-width: 40px;
         }
 
         .income-cell {
             font-weight: 500;
+            min-width: 80px;
+            max-width: 80px;
+            font-size: 11px;
         }
 
-        /* Make columns resizable-looking */
-        .data-table th {
-            user-select: none;
-            position: relative;
+        .community-cell {
+            min-width: 90px;
+            max-width: 90px;
+            font-size: 11px;
+        }
+
+        .marital-cell {
+            min-width: 80px;
+            max-width: 80px;
+            font-size: 11px;
+        }
+
+        .education-cell {
+            min-width: 120px;
+            max-width: 120px;
+            font-size: 11px;
         }
 
         .highlight {
@@ -340,126 +410,188 @@
             font-weight: bold;
         }
 
-        @media (max-width: 1200px) {
-            .filters-row {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .filter-select {
-                margin-bottom: 5px;
-            }
+        /* Ensure table fits in viewport */
+        .data-table {
+            table-layout: fixed;
+        }
+
+        /* Loading state */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <div class="header">
-        <div class="title">Matrimony Database</div>
-        <div class="stats">
-            <span>Total: <strong id="totalCount">-</strong></span>
-            <span>Showing: <strong id="filteredCount">-</strong></span>
-            <span style="color: #27ae60;">❤️ <strong id="likedCount">0</strong></span>
-            <span style="color: #f39c12;">⭐ <strong id="maybeCount">0</strong></span>
-            <span style="color: #e74c3c;">❌ <strong id="rejectedCount">0</strong></span>
+    <div class="app-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="title">Matrimony Database</div>
+            <div class="stats">
+                <span>Total: <strong id="totalCount">-</strong></span>
+                <span>Showing: <strong id="filteredCount">-</strong></span>
+                <span style="color: #27ae60;">❤️ <strong id="likedCount">0</strong></span>
+                <span style="color: #f39c12;">⭐ <strong id="maybeCount">0</strong></span>
+                <span style="color: #e74c3c;">❌ <strong id="rejectedCount">0</strong></span>
+            </div>
         </div>
-    </div>
 
-    <!-- Controls -->
-    <div class="controls">
-        <div class="search-row">
-            <input type="text" class="search-input" id="searchInput" 
-                   placeholder="Search by name, profession, location, phone, email, preferences...">
+        <!-- Controls -->
+        <div class="controls">
+            <div class="search-row">
+                <input type="text" class="search-input" id="searchInput" 
+                       placeholder="Search by name, profession, location, phone, email, preferences, family details...">
+            </div>
+            
+            <div class="filters-row">
+                <div class="filter-group">
+                    <label>Source</label>
+                    <select class="filter-select" id="sourceFilter">
+                        <option value="">All Sources</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Gender</label>
+                    <select class="filter-select" id="genderFilter">
+                        <option value="">All</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Age Range</label>
+                    <div class="age-inputs">
+                        <input type="number" class="filter-input" id="minAge" placeholder="Min" min="18" max="80">
+                        <span style="align-self: center;">-</span>
+                        <input type="number" class="filter-input" id="maxAge" placeholder="Max" min="18" max="80">
+                    </div>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Country</label>
+                    <select class="filter-select" id="countryFilter">
+                        <option value="">All Countries</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>City</label>
+                    <select class="filter-select" id="cityFilter">
+                        <option value="">All Cities</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Community</label>
+                    <select class="filter-select" id="communityFilter">
+                        <option value="">All Communities</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Marital Status</label>
+                    <select class="filter-select" id="maritalFilter">
+                        <option value="">All Status</option>
+                        <option value="Single">Single</option>
+                        <option value="Never Married">Never Married</option>
+                        <option value="Divorced">Divorced</option>
+                        <option value="Widowed">Widowed</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Income Range</label>
+                    <select class="filter-select" id="incomeFilter">
+                        <option value="">All Income</option>
+                        <option value="0-5">0-5 Lakhs</option>
+                        <option value="5-10">5-10 Lakhs</option>
+                        <option value="10-20">10-20 Lakhs</option>
+                        <option value="20-50">20-50 Lakhs</option>
+                        <option value="50+">50+ Lakhs</option>
+                        <option value="USD">USD Income</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Tagged</label>
+                    <select class="filter-select" id="tagFilter">
+                        <option value="">All</option>
+                        <option value="like">❤️ Liked</option>
+                        <option value="maybe">⭐ Maybe</option>
+                        <option value="reject">❌ Rejected</option>
+                        <option value="untagged">Untagged</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group action-buttons">
+                    <label>&nbsp;</label>
+                    <div style="display: flex; gap: 4px;">
+                        <button class="btn clear-btn" onclick="clearAllFilters()">Clear</button>
+                        <button class="btn export-btn" onclick="exportToCSV()">Export</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div id="loadingMessage" class="loading-overlay">
+            Loading matrimony database...
         </div>
         
-        <div class="filters-row">
-            <label><strong>Source:</strong></label>
-            <select class="filter-select" id="sourceFilter">
-                <option value="">All Sources</option>
-            </select>
-            
-            <label><strong>Gender:</strong></label>
-            <select class="filter-select" id="genderFilter">
-                <option value="">All Genders</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-            </select>
-            
-            <label><strong>Age:</strong></label>
-            <select class="filter-select" id="ageFilter">
-                <option value="">All Ages</option>
-                <option value="20-25">20-25</option>
-                <option value="26-30">26-30</option>
-                <option value="31-35">31-35</option>
-                <option value="36-40">36-40</option>
-                <option value="41-45">41-45</option>
-                <option value="46-50">46-50</option>
-                <option value="50+">50+</option>
-            </select>
-            
-            <label><strong>Country:</strong></label>
-            <select class="filter-select" id="countryFilter">
-                <option value="">All Countries</option>
-            </select>
-            
-            <label><strong>Tagged:</strong></label>
-            <select class="filter-select" id="tagFilter">
-                <option value="">All Profiles</option>
-                <option value="like">❤️ Liked</option>
-                <option value="maybe">⭐ Maybe</option>
-                <option value="reject">❌ Rejected</option>
-                <option value="untagged">📝 Untagged</option>
-            </select>
-            
-            <button class="clear-btn" onclick="clearAllFilters()">Clear All</button>
-            <button class="export-btn" onclick="exportToCSV()">Export to Excel</button>
+        <div id="tableContainer" class="table-container" style="display: none;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Name & ID</th>
+                        <th>Age</th>
+                        <th>Gender</th>
+                        <th>Contact</th>
+                        <th>Location</th>
+                        <th>Height</th>
+                        <th>Profession</th>
+                        <th>Education</th>
+                        <th>Income</th>
+                        <th>Community</th>
+                        <th>Marital</th>
+                        <th>Partner Preferences</th>
+                        <th>Tags</th>
+                    </tr>
+                </thead>
+                <tbody id="profilesTableBody">
+                    <!-- Data will be loaded here -->
+                </tbody>
+            </table>
         </div>
-    </div>
 
-    <!-- Main Content -->
-    <div id="loadingMessage" class="loading">Loading matrimony database...</div>
-    
-    <div id="tableContainer" class="table-container" style="display: none;">
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>Name & ID</th>
-                    <th>Age</th>
-                    <th>Gender</th>
-                    <th>Contact</th>
-                    <th>Location</th>
-                    <th>Height</th>
-                    <th>Profession</th>
-                    <th>Education</th>
-                    <th>Income</th>
-                    <th>Community</th>
-                    <th>Marital Status</th>
-                    <th>Partner Preferences</th>
-                    <th>Tags</th>
-                </tr>
-            </thead>
-            <tbody id="profilesTableBody">
-                <!-- Data will be loaded here -->
-            </tbody>
-        </table>
-    </div>
+        <div id="noResults" class="no-results" style="display: none;">
+            <div>
+                <h3>No profiles found</h3>
+                <p>Try adjusting your search terms or filters</p>
+            </div>
+        </div>
 
-    <div id="noResults" class="no-results" style="display: none;">
-        <h3>No profiles found</h3>
-        <p>Try adjusting your search terms or filters</p>
-    </div>
-
-    <!-- Pagination -->
-    <div id="pagination" class="pagination" style="display: none;">
-        <button id="prevPage">← Previous</button>
-        <span class="pagination-info" id="pageInfo">Page 1 of 1</span>
-        <button id="nextPage">Next →</button>
-        <select id="rowsPerPage" class="filter-select" style="margin-left: 20px;">
-            <option value="25">25 rows</option>
-            <option value="50" selected>50 rows</option>
-            <option value="100">100 rows</option>
-            <option value="all">Show All</option>
-        </select>
+        <!-- Pagination -->
+        <div id="pagination" class="pagination" style="display: none;">
+            <button id="prevPage">← Prev</button>
+            <span class="pagination-info" id="pageInfo">Page 1 of 1</span>
+            <button id="nextPage">Next →</button>
+            <select id="rowsPerPage" class="filter-select">
+                <option value="50">50 rows</option>
+                <option value="100" selected>100 rows</option>
+                <option value="200">200 rows</option>
+                <option value="all">Show All</option>
+            </select>
+        </div>
     </div>
 
     <script>
@@ -467,7 +599,7 @@
         let filteredProfiles = [];
         let tags = JSON.parse(localStorage.getItem('matrimony-tags') || '{}');
         let currentPage = 1;
-        let rowsPerPage = 50;
+        let rowsPerPage = 100;
 
         // Initialize the application
         async function initApp() {
@@ -506,6 +638,14 @@
             // Countries
             const countries = [...new Set(allProfiles.map(p => p.country).filter(Boolean))].sort();
             populateSelect('countryFilter', countries);
+
+            // Cities
+            const cities = [...new Set(allProfiles.map(p => p.city).filter(Boolean))].sort();
+            populateSelect('cityFilter', cities);
+
+            // Communities
+            const communities = [...new Set(allProfiles.map(p => p.community_sect).filter(Boolean))].sort();
+            populateSelect('communityFilter', communities);
         }
 
         function populateSelect(selectId, options) {
@@ -523,8 +663,13 @@
             document.getElementById('searchInput').addEventListener('input', debounce(applyFilters, 300));
             document.getElementById('sourceFilter').addEventListener('change', applyFilters);
             document.getElementById('genderFilter').addEventListener('change', applyFilters);
-            document.getElementById('ageFilter').addEventListener('change', applyFilters);
+            document.getElementById('minAge').addEventListener('input', debounce(applyFilters, 300));
+            document.getElementById('maxAge').addEventListener('input', debounce(applyFilters, 300));
             document.getElementById('countryFilter').addEventListener('change', applyFilters);
+            document.getElementById('cityFilter').addEventListener('change', applyFilters);
+            document.getElementById('communityFilter').addEventListener('change', applyFilters);
+            document.getElementById('maritalFilter').addEventListener('change', applyFilters);
+            document.getElementById('incomeFilter').addEventListener('change', applyFilters);
             document.getElementById('tagFilter').addEventListener('change', applyFilters);
             document.getElementById('rowsPerPage').addEventListener('change', changeRowsPerPage);
             
@@ -549,8 +694,13 @@
             const search = document.getElementById('searchInput').value.toLowerCase();
             const source = document.getElementById('sourceFilter').value;
             const gender = document.getElementById('genderFilter').value;
-            const ageRange = document.getElementById('ageFilter').value;
+            const minAge = parseInt(document.getElementById('minAge').value) || 0;
+            const maxAge = parseInt(document.getElementById('maxAge').value) || 999;
             const country = document.getElementById('countryFilter').value;
+            const city = document.getElementById('cityFilter').value;
+            const community = document.getElementById('communityFilter').value;
+            const marital = document.getElementById('maritalFilter').value;
+            const income = document.getElementById('incomeFilter').value;
             const tagStatus = document.getElementById('tagFilter').value;
 
             filteredProfiles = allProfiles.filter(profile => {
@@ -564,10 +714,22 @@
                 if (gender && profile.gender !== gender) return false;
                 
                 // Age range filter
-                if (ageRange && !matchesAgeRange(profile.age, ageRange)) return false;
+                if (profile.age && (profile.age < minAge || profile.age > maxAge)) return false;
                 
                 // Country filter
                 if (country && profile.country !== country) return false;
+                
+                // City filter
+                if (city && profile.city !== city) return false;
+                
+                // Community filter
+                if (community && profile.community_sect !== community) return false;
+                
+                // Marital status filter
+                if (marital && profile.marital_status !== marital) return false;
+                
+                // Income filter
+                if (income && !matchesIncomeRange(profile.annual_income, income)) return false;
                 
                 // Tag filter
                 if (tagStatus) {
@@ -603,25 +765,47 @@
                 profile.father_name,
                 profile.mother_name,
                 profile.annual_income,
-                profile.work_location
+                profile.work_location,
+                profile.address,
+                profile.marital_status,
+                profile.gothram_gotra,
+                profile.star_nakshatra,
+                profile.rasi_sign
             ].filter(Boolean).join(' ').toLowerCase();
             
             return searchableText.includes(searchTerm);
         }
 
-        // Check if age matches the selected range
-        function matchesAgeRange(age, range) {
-            if (!age) return false;
+        // Check if income matches the selected range
+        function matchesIncomeRange(income, range) {
+            if (!income) return false;
+            
+            const incomeStr = income.toLowerCase();
+            const hasNumber = /\d/.test(incomeStr);
+            
+            if (!hasNumber) return false;
+            
+            // Extract numbers from income string
+            const numbers = incomeStr.match(/\d+/g);
+            if (!numbers) return false;
+            
+            const firstNumber = parseInt(numbers[0]);
             
             switch(range) {
-                case '20-25': return age >= 20 && age <= 25;
-                case '26-30': return age >= 26 && age <= 30;
-                case '31-35': return age >= 31 && age <= 35;
-                case '36-40': return age >= 36 && age <= 40;
-                case '41-45': return age >= 41 && age <= 45;
-                case '46-50': return age >= 46 && age <= 50;
-                case '50+': return age >= 50;
-                default: return true;
+                case '0-5':
+                    return firstNumber >= 0 && firstNumber <= 5;
+                case '5-10':
+                    return firstNumber > 5 && firstNumber <= 10;
+                case '10-20':
+                    return firstNumber > 10 && firstNumber <= 20;
+                case '20-50':
+                    return firstNumber > 20 && firstNumber <= 50;
+                case '50+':
+                    return firstNumber > 50;
+                case 'USD':
+                    return incomeStr.includes('usd') || incomeStr.includes('$') || incomeStr.includes('dollar');
+                default:
+                    return true;
             }
         }
 
@@ -633,7 +817,7 @@
             
             if (filteredProfiles.length === 0) {
                 tableContainer.style.display = 'none';
-                noResults.style.display = 'block';
+                noResults.style.display = 'flex';
                 return;
             }
 
@@ -669,19 +853,20 @@
                         ${profile.email ? `<a href="mailto:${profile.email}" class="contact-link">✉️ ${profile.email}</a>` : ''}
                     </td>
                     <td class="location-cell">
-                        ${profile.city || ''}${profile.city && profile.country ? ', ' : ''}${profile.country || '-'}
+                        <div>${profile.city || ''}</div>
+                        <div>${profile.country || ''}</div>
                     </td>
                     <td class="height-cell">${profile.height_display || '-'}</td>
                     <td class="profession-cell">
                         <div>${profile.profession_job || '-'}</div>
-                        ${profile.work_location ? `<small style="color: #7f8c8d;">@ ${profile.work_location}</small>` : ''}
+                        ${profile.work_location ? `<div style="color: #7f8c8d; font-size: 10px;">@ ${profile.work_location}</div>` : ''}
                     </td>
-                    <td>${profile.qualification_education || '-'}</td>
+                    <td class="education-cell">${profile.qualification_education || '-'}</td>
                     <td class="income-cell">${profile.annual_income || '-'}</td>
-                    <td>${profile.community_sect || '-'}</td>
-                    <td>${profile.marital_status || '-'}</td>
-                    <td class="preferences-cell" title="${profile.partner_preferences || profile.expectations || ''}">
-                        ${profile.partner_preferences || profile.expectations || '-'}
+                    <td class="community-cell">${profile.community_sect || '-'}</td>
+                    <td class="marital-cell">${profile.marital_status || '-'}</td>
+                    <td class="preferences-cell">
+                        ${profile.partner_preferences || profile.expectations || profile.additional_details || '-'}
                     </td>
                     <td class="tag-cell">
                         <div class="tag-buttons">
@@ -741,7 +926,7 @@
             } else {
                 const startItem = (currentPage - 1) * rowsPerPage + 1;
                 const endItem = Math.min(currentPage * rowsPerPage, totalItems);
-                document.getElementById('pageInfo').textContent = `${startItem}-${endItem} of ${totalItems} profiles`;
+                document.getElementById('pageInfo').textContent = `${startItem}-${endItem} of ${totalItems}`;
             }
         }
 
@@ -774,8 +959,13 @@
             document.getElementById('searchInput').value = '';
             document.getElementById('sourceFilter').value = '';
             document.getElementById('genderFilter').value = '';
-            document.getElementById('ageFilter').value = '';
+            document.getElementById('minAge').value = '';
+            document.getElementById('maxAge').value = '';
             document.getElementById('countryFilter').value = '';
+            document.getElementById('cityFilter').value = '';
+            document.getElementById('communityFilter').value = '';
+            document.getElementById('maritalFilter').value = '';
+            document.getElementById('incomeFilter').value = '';
             document.getElementById('tagFilter').value = '';
             applyFilters();
         }
@@ -785,7 +975,7 @@
             const headers = [
                 'Name', 'ID', 'Age', 'Gender', 'Phone', 'Email', 'City', 'Country', 
                 'Height', 'Profession', 'Education', 'Income', 'Community', 'Marital Status',
-                'Partner Preferences', 'Source', 'Tag'
+                'Partner Preferences', 'Father', 'Mother', 'Source', 'Tag'
             ];
             
             const csvData = [
@@ -806,6 +996,8 @@
                     `"${profile.community_sect || ''}"`,
                     `"${profile.marital_status || ''}"`,
                     `"${(profile.partner_preferences || '').replace(/"/g, '""')}"`,
+                    `"${profile.father_name || ''}"`,
+                    `"${profile.mother_name || ''}"`,
                     `"${profile.source_system || ''}"`,
                     `"${tags[profile.review_id] || ''}"`
                 ].join(','))
