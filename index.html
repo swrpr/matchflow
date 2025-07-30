@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MatchFlow - Simple & Clean</title>
+    <title>Matrimony Database</title>
     <style>
         * {
             margin: 0;
@@ -12,317 +12,284 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f5f5f5;
+            font-family: Arial, sans-serif;
+            background: white;
             color: #333;
-            line-height: 1.4;
+            font-size: 14px;
         }
 
         .header {
-            background: white;
+            background: #2c3e50;
+            color: white;
             padding: 15px 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .logo {
+        .title {
             font-size: 20px;
             font-weight: bold;
-            color: #007AFF;
         }
 
         .stats {
             display: flex;
             gap: 20px;
             font-size: 14px;
-            color: #666;
         }
 
         .controls {
-            background: white;
+            background: #ecf0f1;
             padding: 20px;
-            margin: 20px auto;
-            max-width: 1200px;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-bottom: 2px solid #bdc3c7;
         }
 
-        .filters {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto;
+        .search-row {
+            display: flex;
             gap: 15px;
-            align-items: end;
+            align-items: center;
+            margin-bottom: 15px;
         }
 
-        .filter-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 13px;
-            font-weight: 500;
-            color: #555;
+        .search-input {
+            flex: 1;
+            padding: 10px 15px;
+            font-size: 16px;
+            border: 2px solid #3498db;
+            border-radius: 5px;
         }
 
-        .filter-group input, .filter-group select {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 14px;
-        }
-
-        .filter-group input:focus, .filter-group select:focus {
+        .search-input:focus {
             outline: none;
-            border-color: #007AFF;
+            border-color: #2980b9;
+        }
+
+        .filters-row {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-select {
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            background: white;
         }
 
         .clear-btn {
-            padding: 8px 16px;
-            background: #666;
+            padding: 8px 20px;
+            background: #e74c3c;
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 4px;
             cursor: pointer;
             font-size: 14px;
+            font-weight: bold;
         }
 
         .clear-btn:hover {
-            background: #555;
+            background: #c0392b;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .profiles-table {
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .table-header {
-            background: #f8f9fa;
-            display: grid;
-            grid-template-columns: 150px 1fr 80px 120px 150px 200px 100px;
-            padding: 12px 15px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #555;
-            border-bottom: 1px solid #eee;
-        }
-
-        .profile-row {
-            display: grid;
-            grid-template-columns: 150px 1fr 80px 120px 150px 200px 100px;
-            padding: 15px;
-            border-bottom: 1px solid #f0f0f0;
-            transition: background 0.2s;
+        .export-btn {
+            padding: 8px 20px;
+            background: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 4px;
             cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
         }
 
-        .profile-row:hover {
+        .export-btn:hover {
+            background: #229954;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            background: white;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1600px;
+        }
+
+        .data-table th {
+            background: #34495e;
+            color: white;
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: bold;
+            border-right: 1px solid #2c3e50;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            font-size: 13px;
+        }
+
+        .data-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #ecf0f1;
+            border-right: 1px solid #ecf0f1;
+            vertical-align: top;
+            font-size: 13px;
+        }
+
+        .data-table tr:nth-child(even) {
             background: #f8f9fa;
         }
 
-        .profile-row:last-child {
-            border-bottom: none;
+        .data-table tr:hover {
+            background: #e8f4fd;
         }
 
-        .profile-name {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 3px;
+        .name-cell {
+            font-weight: bold;
+            color: #2c3e50;
+            min-width: 150px;
         }
 
-        .profile-id {
-            font-size: 11px;
-            color: #999;
+        .id-cell {
             font-family: monospace;
+            color: #7f8c8d;
+            font-size: 11px;
         }
 
-        .profile-basic {
-            font-size: 14px;
-            color: #666;
-        }
-
-        .profile-contact {
-            font-size: 13px;
+        .contact-cell {
+            min-width: 120px;
         }
 
         .contact-link {
-            color: #007AFF;
+            color: #3498db;
             text-decoration: none;
-            margin-right: 8px;
+            display: block;
+            margin: 2px 0;
         }
 
         .contact-link:hover {
             text-decoration: underline;
         }
 
-        .profile-location {
-            font-size: 13px;
-            color: #666;
+        .profession-cell {
+            min-width: 180px;
         }
 
-        .profile-work {
-            font-size: 13px;
-            color: #666;
+        .location-cell {
+            min-width: 120px;
+        }
+
+        .preferences-cell {
+            max-width: 250px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        .preferences-cell:hover {
+            white-space: normal;
+            overflow: visible;
+            background: #fff3cd;
+            position: relative;
+            z-index: 5;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .tag-cell {
+            text-align: center;
+            min-width: 100px;
         }
 
         .tag-buttons {
             display: flex;
-            gap: 6px;
+            gap: 4px;
+            justify-content: center;
         }
 
         .tag-btn {
-            width: 28px;
-            height: 28px;
+            width: 24px;
+            height: 24px;
             border: none;
-            border-radius: 50%;
+            border-radius: 3px;
             cursor: pointer;
-            font-size: 14px;
-            transition: all 0.2s;
+            font-size: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .tag-btn.reject {
-            background: #ff3b30;
+        .tag-btn.like {
+            background: #27ae60;
             color: white;
         }
 
         .tag-btn.maybe {
-            background: #ff9500;
+            background: #f39c12;
             color: white;
         }
 
-        .tag-btn.like {
-            background: #34c759;
+        .tag-btn.reject {
+            background: #e74c3c;
             color: white;
         }
 
         .tag-btn:not(.active) {
-            background: #f0f0f0;
-            color: #999;
+            background: #ecf0f1;
+            color: #95a5a6;
         }
 
         .tag-btn:hover {
-            transform: scale(1.1);
+            opacity: 0.8;
         }
 
         .source-badge {
             display: inline-block;
             padding: 2px 6px;
-            border-radius: 10px;
+            border-radius: 3px;
             font-size: 10px;
-            font-weight: 500;
-            margin-bottom: 2px;
+            font-weight: bold;
+            margin-top: 2px;
         }
 
         .source-pdf {
-            background: #ffebee;
-            color: #c62828;
+            background: #e8f5e8;
+            color: #27ae60;
         }
 
         .source-matdb {
-            background: #f3e5f5;
-            color: #7b1fa2;
-        }
-
-        .expanded-row {
-            grid-column: 1 / -1;
-            background: #f8f9fa;
-            padding: 20px;
-            border-top: 1px solid #eee;
-        }
-
-        .expanded-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-        }
-
-        .detail-section h4 {
-            font-size: 14px;
-            font-weight: 600;
-            color: #555;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 5px;
-        }
-
-        .detail-item {
-            display: flex;
-            margin-bottom: 6px;
-        }
-
-        .detail-label {
-            min-width: 100px;
-            font-size: 13px;
-            color: #666;
-            font-weight: 500;
-        }
-
-        .detail-value {
-            font-size: 13px;
-            color: #333;
-        }
-
-        .preferences-section {
-            grid-column: 1 / -1;
-            margin-top: 15px;
-            padding: 15px;
-            background: white;
-            border-radius: 6px;
-            border-left: 3px solid #007AFF;
-        }
-
-        .preferences-section h4 {
-            color: #007AFF;
-            margin-bottom: 8px;
-        }
-
-        .preferences-text {
-            font-size: 13px;
-            line-height: 1.5;
-            color: #555;
+            background: #fdf2e9;
+            color: #e67e22;
         }
 
         .pagination {
+            background: #ecf0f1;
+            padding: 15px 20px;
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 10px;
-            padding: 20px;
-            margin: 20px 0;
+            border-top: 1px solid #bdc3c7;
         }
 
         .pagination button {
             padding: 8px 16px;
-            border: 1px solid #ddd;
+            border: 1px solid #bdc3c7;
             background: white;
-            border-radius: 6px;
+            border-radius: 4px;
             cursor: pointer;
             font-size: 14px;
         }
 
         .pagination button:hover:not(:disabled) {
-            background: #007AFF;
+            background: #3498db;
             color: white;
-            border-color: #007AFF;
+            border-color: #3498db;
         }
 
         .pagination button:disabled {
@@ -330,126 +297,169 @@
             cursor: not-allowed;
         }
 
-        .no-results {
-            text-align: center;
-            padding: 40px;
-            color: #666;
-            background: white;
-            border-radius: 8px;
-            margin: 20px 0;
+        .pagination-info {
+            margin: 0 20px;
+            font-weight: bold;
         }
 
-        @media (max-width: 1024px) {
-            .filters {
-                grid-template-columns: 1fr;
-                gap: 10px;
-            }
-            
-            .table-header, .profile-row {
-                grid-template-columns: 1fr;
-                gap: 10px;
-            }
-            
-            .expanded-content {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #7f8c8d;
+            font-size: 18px;
         }
 
         .loading {
             text-align: center;
-            padding: 40px;
-            font-size: 16px;
-            color: #666;
+            padding: 60px 20px;
+            font-size: 18px;
+            color: #7f8c8d;
+        }
+
+        .age-cell {
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .height-cell {
+            text-align: center;
+        }
+
+        .income-cell {
+            font-weight: 500;
+        }
+
+        /* Make columns resizable-looking */
+        .data-table th {
+            user-select: none;
+            position: relative;
+        }
+
+        .highlight {
+            background-color: #fff3cd !important;
+            font-weight: bold;
+        }
+
+        @media (max-width: 1200px) {
+            .filters-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filter-select {
+                margin-bottom: 5px;
+            }
         }
     </style>
 </head>
 <body>
     <!-- Header -->
     <div class="header">
-        <div class="header-content">
-            <div class="logo">MatchFlow</div>
-            <div class="stats">
-                <span>Total: <strong id="totalCount">-</strong></span>
-                <span>Showing: <strong id="filteredCount">-</strong></span>
-                <span>❤️ <strong id="likedCount">0</strong></span>
-                <span>⭐ <strong id="maybeCount">0</strong></span>
-                <span>❌ <strong id="rejectedCount">0</strong></span>
-            </div>
+        <div class="title">Matrimony Database</div>
+        <div class="stats">
+            <span>Total: <strong id="totalCount">-</strong></span>
+            <span>Showing: <strong id="filteredCount">-</strong></span>
+            <span style="color: #27ae60;">❤️ <strong id="likedCount">0</strong></span>
+            <span style="color: #f39c12;">⭐ <strong id="maybeCount">0</strong></span>
+            <span style="color: #e74c3c;">❌ <strong id="rejectedCount">0</strong></span>
         </div>
     </div>
 
     <!-- Controls -->
     <div class="controls">
-        <div class="filters">
-            <div class="filter-group">
-                <label>Search</label>
-                <input type="text" id="searchInput" placeholder="Name, profession, location...">
-            </div>
-            <div class="filter-group">
-                <label>Source</label>
-                <select id="sourceFilter">
-                    <option value="">All Sources</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label>Gender</label>
-                <select id="genderFilter">
-                    <option value="">All</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label>Country</label>
-                <select id="countryFilter">
-                    <option value="">All Countries</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label>Tagged</label>
-                <select id="tagFilter">
-                    <option value="">All</option>
-                    <option value="like">❤️ Liked</option>
-                    <option value="maybe">⭐ Maybe</option>
-                    <option value="reject">❌ Rejected</option>
-                    <option value="untagged">Untagged</option>
-                </select>
-            </div>
-            <button class="clear-btn" onclick="clearFilters()">Clear</button>
+        <div class="search-row">
+            <input type="text" class="search-input" id="searchInput" 
+                   placeholder="Search by name, profession, location, phone, email, preferences...">
+        </div>
+        
+        <div class="filters-row">
+            <label><strong>Source:</strong></label>
+            <select class="filter-select" id="sourceFilter">
+                <option value="">All Sources</option>
+            </select>
+            
+            <label><strong>Gender:</strong></label>
+            <select class="filter-select" id="genderFilter">
+                <option value="">All Genders</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+            
+            <label><strong>Age:</strong></label>
+            <select class="filter-select" id="ageFilter">
+                <option value="">All Ages</option>
+                <option value="20-25">20-25</option>
+                <option value="26-30">26-30</option>
+                <option value="31-35">31-35</option>
+                <option value="36-40">36-40</option>
+                <option value="41-45">41-45</option>
+                <option value="46-50">46-50</option>
+                <option value="50+">50+</option>
+            </select>
+            
+            <label><strong>Country:</strong></label>
+            <select class="filter-select" id="countryFilter">
+                <option value="">All Countries</option>
+            </select>
+            
+            <label><strong>Tagged:</strong></label>
+            <select class="filter-select" id="tagFilter">
+                <option value="">All Profiles</option>
+                <option value="like">❤️ Liked</option>
+                <option value="maybe">⭐ Maybe</option>
+                <option value="reject">❌ Rejected</option>
+                <option value="untagged">📝 Untagged</option>
+            </select>
+            
+            <button class="clear-btn" onclick="clearAllFilters()">Clear All</button>
+            <button class="export-btn" onclick="exportToCSV()">Export to Excel</button>
         </div>
     </div>
 
     <!-- Main Content -->
-    <div class="container">
-        <div id="loadingMessage" class="loading">Loading profiles...</div>
-        
-        <div id="profilesTable" class="profiles-table" style="display: none;">
-            <div class="table-header">
-                <div>Name & ID</div>
-                <div>Basic Info</div>
-                <div>Age</div>
-                <div>Contact</div>
-                <div>Location</div>
-                <div>Profession</div>
-                <div>Actions</div>
-            </div>
-            <div id="profilesBody">
-                <!-- Profiles will be loaded here -->
-            </div>
-        </div>
+    <div id="loadingMessage" class="loading">Loading matrimony database...</div>
+    
+    <div id="tableContainer" class="table-container" style="display: none;">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Name & ID</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Contact</th>
+                    <th>Location</th>
+                    <th>Height</th>
+                    <th>Profession</th>
+                    <th>Education</th>
+                    <th>Income</th>
+                    <th>Community</th>
+                    <th>Marital Status</th>
+                    <th>Partner Preferences</th>
+                    <th>Tags</th>
+                </tr>
+            </thead>
+            <tbody id="profilesTableBody">
+                <!-- Data will be loaded here -->
+            </tbody>
+        </table>
+    </div>
 
-        <div id="noResults" class="no-results" style="display: none;">
-            <h3>No profiles found</h3>
-            <p>Try adjusting your filters</p>
-        </div>
+    <div id="noResults" class="no-results" style="display: none;">
+        <h3>No profiles found</h3>
+        <p>Try adjusting your search terms or filters</p>
+    </div>
 
-        <!-- Pagination -->
-        <div id="pagination" class="pagination" style="display: none;">
-            <button id="prevPage">← Previous</button>
-            <span id="pageInfo">Page 1 of 1</span>
-            <button id="nextPage">Next →</button>
-        </div>
+    <!-- Pagination -->
+    <div id="pagination" class="pagination" style="display: none;">
+        <button id="prevPage">← Previous</button>
+        <span class="pagination-info" id="pageInfo">Page 1 of 1</span>
+        <button id="nextPage">Next →</button>
+        <select id="rowsPerPage" class="filter-select" style="margin-left: 20px;">
+            <option value="25">25 rows</option>
+            <option value="50" selected>50 rows</option>
+            <option value="100">100 rows</option>
+            <option value="all">Show All</option>
+        </select>
     </div>
 
     <script>
@@ -457,39 +467,40 @@
         let filteredProfiles = [];
         let tags = JSON.parse(localStorage.getItem('matrimony-tags') || '{}');
         let currentPage = 1;
-        let expandedRow = null;
-        const profilesPerPage = 25;
+        let rowsPerPage = 50;
 
-        // Initialize app
+        // Initialize the application
         async function initApp() {
             try {
                 await loadProfiles();
-                populateFilters();
+                populateFilterOptions();
                 setupEventListeners();
                 applyFilters();
                 updateStats();
-                showLoading(false);
+                showContent();
             } catch (error) {
-                console.error('Failed to load:', error);
-                document.getElementById('loadingMessage').innerHTML = 'Failed to load profiles.';
+                console.error('Failed to initialize:', error);
+                document.getElementById('loadingMessage').innerHTML = 'Failed to load profiles. Please refresh the page.';
             }
         }
 
+        // Load profiles from JSON
         async function loadProfiles() {
             const response = await fetch('data/profiles.json');
             allProfiles = await response.json();
             console.log(`Loaded ${allProfiles.length} profiles`);
         }
 
-        function showLoading(show) {
-            document.getElementById('loadingMessage').style.display = show ? 'block' : 'none';
-            document.getElementById('profilesTable').style.display = show ? 'none' : 'block';
-            document.getElementById('pagination').style.display = show ? 'none' : 'flex';
+        function showContent() {
+            document.getElementById('loadingMessage').style.display = 'none';
+            document.getElementById('tableContainer').style.display = 'block';
+            document.getElementById('pagination').style.display = 'flex';
         }
 
-        function populateFilters() {
-            // Sources
-            const sources = [...new Set(allProfiles.map(p => p.source_system).filter(Boolean))];
+        // Populate filter dropdowns
+        function populateFilterOptions() {
+            // Source files
+            const sources = [...new Set(allProfiles.map(p => p.source_system).filter(Boolean))].sort();
             populateSelect('sourceFilter', sources);
 
             // Countries
@@ -497,22 +508,25 @@
             populateSelect('countryFilter', countries);
         }
 
-        function populateSelect(id, options) {
-            const select = document.getElementById(id);
+        function populateSelect(selectId, options) {
+            const select = document.getElementById(selectId);
             options.forEach(option => {
-                const opt = document.createElement('option');
-                opt.value = option;
-                opt.textContent = option;
-                select.appendChild(opt);
+                const optElement = document.createElement('option');
+                optElement.value = option;
+                optElement.textContent = option;
+                select.appendChild(optElement);
             });
         }
 
+        // Setup event listeners
         function setupEventListeners() {
             document.getElementById('searchInput').addEventListener('input', debounce(applyFilters, 300));
             document.getElementById('sourceFilter').addEventListener('change', applyFilters);
             document.getElementById('genderFilter').addEventListener('change', applyFilters);
+            document.getElementById('ageFilter').addEventListener('change', applyFilters);
             document.getElementById('countryFilter').addEventListener('change', applyFilters);
             document.getElementById('tagFilter').addEventListener('change', applyFilters);
+            document.getElementById('rowsPerPage').addEventListener('change', changeRowsPerPage);
             
             document.getElementById('prevPage').addEventListener('click', () => changePage(-1));
             document.getElementById('nextPage').addEventListener('click', () => changePage(1));
@@ -530,19 +544,32 @@
             };
         }
 
+        // Apply all filters
         function applyFilters() {
             const search = document.getElementById('searchInput').value.toLowerCase();
             const source = document.getElementById('sourceFilter').value;
             const gender = document.getElementById('genderFilter').value;
+            const ageRange = document.getElementById('ageFilter').value;
             const country = document.getElementById('countryFilter').value;
             const tagStatus = document.getElementById('tagFilter').value;
 
             filteredProfiles = allProfiles.filter(profile => {
-                if (search && !searchProfile(profile, search)) return false;
+                // Search filter - searches across all important fields
+                if (search && !searchAllFields(profile, search)) return false;
+                
+                // Source filter
                 if (source && profile.source_system !== source) return false;
+                
+                // Gender filter
                 if (gender && profile.gender !== gender) return false;
+                
+                // Age range filter
+                if (ageRange && !matchesAgeRange(profile.age, ageRange)) return false;
+                
+                // Country filter
                 if (country && profile.country !== country) return false;
                 
+                // Tag filter
                 if (tagStatus) {
                     const profileTag = tags[profile.review_id];
                     if (tagStatus === 'untagged' && profileTag) return false;
@@ -553,164 +580,127 @@
             });
 
             currentPage = 1;
-            expandedRow = null;
             displayProfiles();
             updateStats();
             updatePagination();
         }
 
-        function searchProfile(profile, search) {
-            const searchText = [
+        // Search across all relevant fields
+        function searchAllFields(profile, searchTerm) {
+            const searchableText = [
                 profile.full_name,
+                profile.phone_primary,
+                profile.phone_secondary,
+                profile.email,
                 profile.profession_job,
                 profile.qualification_education,
                 profile.city,
                 profile.country,
                 profile.community_sect,
                 profile.partner_preferences,
-                profile.email,
-                profile.phone_primary
+                profile.expectations,
+                profile.additional_details,
+                profile.father_name,
+                profile.mother_name,
+                profile.annual_income,
+                profile.work_location
             ].filter(Boolean).join(' ').toLowerCase();
             
-            return searchText.includes(search);
+            return searchableText.includes(searchTerm);
         }
 
+        // Check if age matches the selected range
+        function matchesAgeRange(age, range) {
+            if (!age) return false;
+            
+            switch(range) {
+                case '20-25': return age >= 20 && age <= 25;
+                case '26-30': return age >= 26 && age <= 30;
+                case '31-35': return age >= 31 && age <= 35;
+                case '36-40': return age >= 36 && age <= 40;
+                case '41-45': return age >= 41 && age <= 45;
+                case '46-50': return age >= 46 && age <= 50;
+                case '50+': return age >= 50;
+                default: return true;
+            }
+        }
+
+        // Display profiles in table
         function displayProfiles() {
-            const tbody = document.getElementById('profilesBody');
+            const tbody = document.getElementById('profilesTableBody');
             const noResults = document.getElementById('noResults');
+            const tableContainer = document.getElementById('tableContainer');
             
             if (filteredProfiles.length === 0) {
-                document.getElementById('profilesTable').style.display = 'none';
+                tableContainer.style.display = 'none';
                 noResults.style.display = 'block';
                 return;
             }
 
-            document.getElementById('profilesTable').style.display = 'block';
+            tableContainer.style.display = 'block';
             noResults.style.display = 'none';
 
-            const startIndex = (currentPage - 1) * profilesPerPage;
-            const endIndex = startIndex + profilesPerPage;
+            // Calculate pagination
+            const startIndex = (currentPage - 1) * rowsPerPage;
+            const endIndex = rowsPerPage === 'all' ? filteredProfiles.length : startIndex + parseInt(rowsPerPage);
             const profilesToShow = filteredProfiles.slice(startIndex, endIndex);
 
-            tbody.innerHTML = profilesToShow.map((profile, index) => {
-                const globalIndex = startIndex + index;
-                return createProfileRow(profile, globalIndex);
-            }).join('');
+            tbody.innerHTML = profilesToShow.map(profile => createTableRow(profile)).join('');
         }
 
-        function createProfileRow(profile, index) {
+        // Create table row for profile
+        function createTableRow(profile) {
             const tag = tags[profile.review_id];
             const sourceBadge = profile.source_system === 'PDF_RKMS' ? 
-                '<span class="source-badge source-pdf">PDF</span>' : 
-                '<span class="source-badge source-matdb">MATDB</span>';
+                '<div class="source-badge source-pdf">PDF</div>' : 
+                '<div class="source-badge source-matdb">MATDB</div>';
 
             return `
-                <div class="profile-row" onclick="toggleExpanded(${index})">
-                    <div>
-                        <div class="profile-name">${profile.full_name || 'Name not provided'}</div>
-                        <div class="profile-id">${profile.review_id}</div>
+                <tr>
+                    <td class="name-cell">
+                        <div>${profile.full_name || 'Name not provided'}</div>
+                        <div class="id-cell">${profile.review_id}</div>
                         ${sourceBadge}
-                    </div>
-                    <div class="profile-basic">
-                        ${profile.gender || 'N/A'} • ${profile.marital_status || 'N/A'}
-                        ${profile.community_sect ? `<br><small>${profile.community_sect}</small>` : ''}
-                    </div>
-                    <div>${profile.age || 'N/A'}</div>
-                    <div class="profile-contact">
-                        ${profile.phone_primary ? `<a href="tel:${profile.phone_primary}" class="contact-link">📱</a>` : ''}
-                        ${profile.email ? `<a href="mailto:${profile.email}" class="contact-link">✉️</a>` : ''}
-                    </div>
-                    <div class="profile-location">
-                        ${profile.city || ''}${profile.city && profile.country ? ', ' : ''}${profile.country || 'N/A'}
-                    </div>
-                    <div class="profile-work">
-                        ${profile.profession_job ? `<div>${profile.profession_job}</div>` : ''}
-                        ${profile.qualification_education ? `<small>${profile.qualification_education}</small>` : ''}
-                    </div>
-                    <div class="tag-buttons" onclick="event.stopPropagation()">
-                        <button class="tag-btn reject ${tag === 'reject' ? 'active' : ''}"
-                                onclick="tagProfile('${profile.review_id}', 'reject')"
-                                title="Reject">❌</button>
-                        <button class="tag-btn maybe ${tag === 'maybe' ? 'active' : ''}"
-                                onclick="tagProfile('${profile.review_id}', 'maybe')"
-                                title="Maybe">⭐</button>
-                        <button class="tag-btn like ${tag === 'like' ? 'active' : ''}"
-                                onclick="tagProfile('${profile.review_id}', 'like')"
-                                title="Like">❤️</button>
-                    </div>
-                </div>
-                ${expandedRow === index ? createExpandedRow(profile) : ''}
+                    </td>
+                    <td class="age-cell">${profile.age || '-'}</td>
+                    <td>${profile.gender || '-'}</td>
+                    <td class="contact-cell">
+                        ${profile.phone_primary ? `<a href="tel:${profile.phone_primary}" class="contact-link">📱 ${profile.phone_primary}</a>` : ''}
+                        ${profile.email ? `<a href="mailto:${profile.email}" class="contact-link">✉️ ${profile.email}</a>` : ''}
+                    </td>
+                    <td class="location-cell">
+                        ${profile.city || ''}${profile.city && profile.country ? ', ' : ''}${profile.country || '-'}
+                    </td>
+                    <td class="height-cell">${profile.height_display || '-'}</td>
+                    <td class="profession-cell">
+                        <div>${profile.profession_job || '-'}</div>
+                        ${profile.work_location ? `<small style="color: #7f8c8d;">@ ${profile.work_location}</small>` : ''}
+                    </td>
+                    <td>${profile.qualification_education || '-'}</td>
+                    <td class="income-cell">${profile.annual_income || '-'}</td>
+                    <td>${profile.community_sect || '-'}</td>
+                    <td>${profile.marital_status || '-'}</td>
+                    <td class="preferences-cell" title="${profile.partner_preferences || profile.expectations || ''}">
+                        ${profile.partner_preferences || profile.expectations || '-'}
+                    </td>
+                    <td class="tag-cell">
+                        <div class="tag-buttons">
+                            <button class="tag-btn like ${tag === 'like' ? 'active' : ''}"
+                                    onclick="tagProfile('${profile.review_id}', 'like')"
+                                    title="Like">❤️</button>
+                            <button class="tag-btn maybe ${tag === 'maybe' ? 'active' : ''}"
+                                    onclick="tagProfile('${profile.review_id}', 'maybe')"
+                                    title="Maybe">⭐</button>
+                            <button class="tag-btn reject ${tag === 'reject' ? 'active' : ''}"
+                                    onclick="tagProfile('${profile.review_id}', 'reject')"
+                                    title="Reject">❌</button>
+                        </div>
+                    </td>
+                </tr>
             `;
         }
 
-        function createExpandedRow(profile) {
-            return `
-                <div class="expanded-row">
-                    <div class="expanded-content">
-                        <div class="detail-section">
-                            <h4>Personal Details</h4>
-                            ${createDetailItem('Date of Birth', profile.date_of_birth)}
-                            ${createDetailItem('Time of Birth', profile.time_of_birth)}
-                            ${createDetailItem('Place of Birth', profile.place_of_birth)}
-                            ${createDetailItem('Height', profile.height_display)}
-                            ${createDetailItem('Star/Nakshatra', profile.star_nakshatra)}
-                            ${createDetailItem('Rasi', profile.rasi_sign)}
-                        </div>
-                        
-                        <div class="detail-section">
-                            <h4>Family Details</h4>
-                            ${createDetailItem('Father', profile.father_name)}
-                            ${createDetailItem('Mother', profile.mother_name)}
-                            ${createDetailItem('Brothers', profile.brothers_count)}
-                            ${createDetailItem('Sisters', profile.sisters_count)}
-                            ${createDetailItem('Gothram', profile.gothram_gotra)}
-                            ${createDetailItem('Mother Tongue', profile.mother_tongue)}
-                        </div>
-                        
-                        <div class="detail-section">
-                            <h4>Professional Details</h4>
-                            ${createDetailItem('Education', profile.qualification_education)}
-                            ${createDetailItem('Profession', profile.profession_job)}
-                            ${createDetailItem('Work Location', profile.work_location)}
-                            ${createDetailItem('Annual Income', profile.annual_income)}
-                        </div>
-                        
-                        <div class="detail-section">
-                            <h4>Contact Information</h4>
-                            ${createDetailItem('Primary Phone', profile.phone_primary)}
-                            ${createDetailItem('Secondary Phone', profile.phone_secondary)}
-                            ${createDetailItem('Email', profile.email)}
-                            ${createDetailItem('Address', profile.address)}
-                        </div>
-                    </div>
-                    
-                    ${profile.partner_preferences || profile.expectations ? `
-                        <div class="preferences-section">
-                            <h4>Partner Preferences</h4>
-                            <div class="preferences-text">
-                                ${profile.partner_preferences || profile.expectations || ''}
-                            </div>
-                        </div>
-                    ` : ''}
-                </div>
-            `;
-        }
-
-        function createDetailItem(label, value) {
-            if (!value || value === 'null' || value === 'undefined') return '';
-            return `
-                <div class="detail-item">
-                    <div class="detail-label">${label}:</div>
-                    <div class="detail-value">${value}</div>
-                </div>
-            `;
-        }
-
-        function toggleExpanded(index) {
-            expandedRow = expandedRow === index ? null : index;
-            displayProfiles();
-        }
-
+        // Tag a profile
         function tagProfile(reviewId, tag) {
             if (tags[reviewId] === tag) {
                 delete tags[reviewId];
@@ -723,6 +713,7 @@
             displayProfiles();
         }
 
+        // Update statistics
         function updateStats() {
             document.getElementById('totalCount').textContent = allProfiles.length;
             document.getElementById('filteredCount').textContent = filteredProfiles.length;
@@ -737,33 +728,100 @@
             document.getElementById('rejectedCount').textContent = tagCounts.reject;
         }
 
+        // Pagination functions
         function updatePagination() {
-            const totalPages = Math.ceil(filteredProfiles.length / profilesPerPage);
+            const totalItems = filteredProfiles.length;
+            const totalPages = rowsPerPage === 'all' ? 1 : Math.ceil(totalItems / rowsPerPage);
+            
             document.getElementById('prevPage').disabled = currentPage === 1;
             document.getElementById('nextPage').disabled = currentPage === totalPages || totalPages === 0;
-            document.getElementById('pageInfo').textContent = `Page ${currentPage} of ${totalPages}`;
+            
+            if (rowsPerPage === 'all') {
+                document.getElementById('pageInfo').textContent = `Showing all ${totalItems} profiles`;
+            } else {
+                const startItem = (currentPage - 1) * rowsPerPage + 1;
+                const endItem = Math.min(currentPage * rowsPerPage, totalItems);
+                document.getElementById('pageInfo').textContent = `${startItem}-${endItem} of ${totalItems} profiles`;
+            }
         }
 
         function changePage(direction) {
-            const totalPages = Math.ceil(filteredProfiles.length / profilesPerPage);
+            if (rowsPerPage === 'all') return;
+            
+            const totalPages = Math.ceil(filteredProfiles.length / rowsPerPage);
             const newPage = currentPage + direction;
             
             if (newPage >= 1 && newPage <= totalPages) {
                 currentPage = newPage;
-                expandedRow = null;
                 displayProfiles();
                 updatePagination();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                document.querySelector('.table-container').scrollTop = 0;
             }
         }
 
-        function clearFilters() {
+        function changeRowsPerPage() {
+            rowsPerPage = document.getElementById('rowsPerPage').value;
+            if (rowsPerPage !== 'all') {
+                rowsPerPage = parseInt(rowsPerPage);
+            }
+            currentPage = 1;
+            displayProfiles();
+            updatePagination();
+        }
+
+        // Clear all filters
+        function clearAllFilters() {
             document.getElementById('searchInput').value = '';
             document.getElementById('sourceFilter').value = '';
             document.getElementById('genderFilter').value = '';
+            document.getElementById('ageFilter').value = '';
             document.getElementById('countryFilter').value = '';
             document.getElementById('tagFilter').value = '';
             applyFilters();
+        }
+
+        // Export to CSV
+        function exportToCSV() {
+            const headers = [
+                'Name', 'ID', 'Age', 'Gender', 'Phone', 'Email', 'City', 'Country', 
+                'Height', 'Profession', 'Education', 'Income', 'Community', 'Marital Status',
+                'Partner Preferences', 'Source', 'Tag'
+            ];
+            
+            const csvData = [
+                headers.join(','),
+                ...filteredProfiles.map(profile => [
+                    `"${profile.full_name || ''}"`,
+                    `"${profile.review_id || ''}"`,
+                    profile.age || '',
+                    `"${profile.gender || ''}"`,
+                    `"${profile.phone_primary || ''}"`,
+                    `"${profile.email || ''}"`,
+                    `"${profile.city || ''}"`,
+                    `"${profile.country || ''}"`,
+                    `"${profile.height_display || ''}"`,
+                    `"${profile.profession_job || ''}"`,
+                    `"${profile.qualification_education || ''}"`,
+                    `"${profile.annual_income || ''}"`,
+                    `"${profile.community_sect || ''}"`,
+                    `"${profile.marital_status || ''}"`,
+                    `"${(profile.partner_preferences || '').replace(/"/g, '""')}"`,
+                    `"${profile.source_system || ''}"`,
+                    `"${tags[profile.review_id] || ''}"`
+                ].join(','))
+            ].join('\n');
+            
+            const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            
+            link.setAttribute('href', url);
+            link.setAttribute('download', 'matrimony_profiles.csv');
+            link.style.visibility = 'hidden';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
 
         // Initialize when page loads
