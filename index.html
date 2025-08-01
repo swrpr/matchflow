@@ -13,9 +13,9 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #f5f2e8 0%, #e8dcc6 100%);
             min-height: 100vh;
-            color: #333;
+            color: #2c2a26;
         }
 
         .container {
@@ -30,14 +30,14 @@
         }
 
         .header h1 {
-            color: white;
+            color: #8b7355;
             font-size: 2.5em;
             margin-bottom: 10px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .header .subtitle {
-            color: rgba(255,255,255,0.9);
+            color: #6b5d49;
             font-size: 1.1em;
         }
 
@@ -60,7 +60,7 @@
         .stat-number {
             font-size: 2em;
             font-weight: bold;
-            color: #667eea;
+            color: #8b7355;
         }
 
         .stat-label {
@@ -106,7 +106,7 @@
         .filter-group select:focus,
         .filter-group input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #8b7355;
         }
 
         .filter-controls {
@@ -129,14 +129,14 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #8b7355 0%, #6b5d49 100%);
             color: white;
         }
 
         .btn-secondary {
             background: #f8f9fa;
-            color: #667eea;
-            border: 2px solid #667eea;
+            color: #8b7355;
+            border: 2px solid #8b7355;
         }
 
         .btn:hover {
@@ -174,7 +174,7 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #8b7355 0%, #6b5d49 100%);
         }
 
         .profile-header {
@@ -205,7 +205,7 @@
 
         .tag {
             background: #f0f2f5;
-            color: #667eea;
+            color: #8b7355;
             padding: 4px 10px;
             border-radius: 20px;
             font-size: 0.85em;
@@ -305,14 +305,14 @@
         .loading {
             text-align: center;
             padding: 40px;
-            color: rgba(255,255,255,0.8);
+            color: rgba(139,115,85,0.8);
         }
 
         .loading-spinner {
             width: 40px;
             height: 40px;
-            border: 4px solid rgba(255,255,255,0.3);
-            border-top: 4px solid white;
+            border: 4px solid rgba(139,115,85,0.3);
+            border-top: 4px solid #8b7355;
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin: 0 auto 20px;
@@ -326,7 +326,7 @@
         .no-results {
             text-align: center;
             padding: 40px;
-            color: rgba(255,255,255,0.8);
+            color: rgba(139,115,85,0.8);
             grid-column: 1 / -1;
         }
 
@@ -373,12 +373,11 @@
             }
         }
     </style>
-<\!-- Updated: 2025-08-02T00:20:10.346450 -->
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🕉️ MatchFlow</h1>
+            <h1>MatchFlow</h1>
             <div class="subtitle">Comprehensive Matrimony Profile Database</div>
         </div>
 
@@ -449,6 +448,13 @@
                 </div>
 
                 <div class="filter-group">
+                    <label for="sourceFilter">Data Source</label>
+                    <select id="sourceFilter">
+                        <option value="">All Sources</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
                     <label for="sortBy">Sort By</label>
                     <select id="sortBy">
                         <option value="name">Name</option>
@@ -513,7 +519,7 @@
             } catch (error) {
                 console.error('Error loading profiles:', error);
                 document.getElementById('loadingIndicator').innerHTML = 
-                    '<div>❌ Failed to load profiles. Please check the data file.</div>';
+                    '<div>Failed to load profiles. Please check the data file.</div>';
             }
         }
 
@@ -533,6 +539,17 @@
             // Populate community filter
             const communities = [...new Set(allProfiles.map(p => p.community_sect || p.sect).filter(Boolean))];
             populateSelect('sectFilter', communities);
+
+            // Populate source filter
+            const sources = [...new Set(allProfiles.map(p => p.source_file).filter(Boolean))];
+            const cleanSources = sources.map(source => {
+                // Clean up source names for display
+                if (source.includes('.pdf')) {
+                    return source.replace(/\.pdf$/, '').replace(/^.*\//, '');
+                }
+                return source.replace('existing_profiles.json', 'Existing Database');
+            });
+            populateSelect('sourceFilter', cleanSources);
         }
 
         function populateSelect(selectId, options) {
@@ -574,6 +591,7 @@
             const qualification = document.getElementById('qualificationFilter').value.toLowerCase();
             const profession = document.getElementById('professionFilter').value.toLowerCase();
             const sect = document.getElementById('sectFilter').value.toLowerCase();
+            const sourceFilter = document.getElementById('sourceFilter').value.toLowerCase();
             const search = document.getElementById('searchInput').value.toLowerCase();
             const sortBy = document.getElementById('sortBy').value;
 
@@ -598,6 +616,15 @@
                 // Community filter
                 if (sect && !(profile.community_sect || '').toLowerCase().includes(sect) && 
                     !(profile.sect || '').toLowerCase().includes(sect)) return false;
+
+                // Source filter
+                if (sourceFilter) {
+                    const profileSource = (profile.source_file || '').toLowerCase();
+                    const cleanProfileSource = profileSource.includes('.pdf') ? 
+                        profileSource.replace(/\.pdf$/, '').replace(/^.*\//, '') : 
+                        profileSource.replace('existing_profiles.json', 'existing database');
+                    if (!cleanProfileSource.includes(sourceFilter)) return false;
+                }
 
                 // Search filter
                 if (search) {
@@ -645,6 +672,7 @@
             document.getElementById('qualificationFilter').value = '';
             document.getElementById('professionFilter').value = '';
             document.getElementById('sectFilter').value = '';
+            document.getElementById('sourceFilter').value = '';
             document.getElementById('searchInput').value = '';
             document.getElementById('sortBy').value = 'name';
 
@@ -710,7 +738,6 @@
 
                     <div class="profile-contact">
                         <div class="contact-info"><strong>Source:</strong> ${profile.source_file}</div>
-                        ${profile.data_quality_score ? `<div class="contact-info"><strong>Data Quality:</strong> ${Math.round(profile.data_quality_score * 100)}%</div>` : ''}
                     </div>
                 </div>
             `;
@@ -775,7 +802,6 @@
                     <h3>Source Information</h3>
                     <div class="detail-row"><span class="detail-label">Profile ID:</span><span class="detail-value">${profile.profile_id}</span></div>
                     <div class="detail-row"><span class="detail-label">Source File:</span><span class="detail-value">${profile.source_file}</span></div>
-                    <div class="detail-row"><span class="detail-label">Data Quality:</span><span class="detail-value">${Math.round((profile.data_quality_score || 0) * 100)}%</span></div>
                 </div>
             `;
 
