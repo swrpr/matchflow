@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matrimony Database</title>
+    <title>Matrimony Profile Viewer</title>
     <style>
         * {
             margin: 0;
@@ -11,495 +11,564 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --success-color: #2ed573;
+            --warning-color: #ffa502;
+            --danger-color: #ff4757;
+            --background: #f8f9fa;
+            --card-background: white;
+            --text-primary: #2c3e50;
+            --text-secondary: #7f8c8d;
+            --border-color: #e9ecef;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background: white;
-            color: #333;
-            font-size: 13px;
-            height: 100vh;
-            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            min-height: 100vh;
+            color: var(--text-primary);
         }
 
         .app-container {
             display: flex;
-            flex-direction: column;
-            height: 100vh;
+            min-height: 100vh;
         }
 
-        .header {
-            background: #2c3e50;
-            color: white;
-            padding: 8px 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-shrink: 0;
+        .sidebar {
+            width: 320px;
+            background: var(--card-background);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            overflow-y: auto;
+            z-index: 100;
         }
 
-        .title {
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .stats {
-            display: flex;
-            gap: 15px;
-            font-size: 13px;
-        }
-
-        .controls {
-            background: #ecf0f1;
-            padding: 10px 15px;
-            border-bottom: 2px solid #bdc3c7;
-            flex-shrink: 0;
-        }
-
-        .search-row {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .search-input {
+        .main-content {
             flex: 1;
-            padding: 6px 10px;
-            font-size: 14px;
-            border: 2px solid #3498db;
-            border-radius: 4px;
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: #2980b9;
-        }
-
-        .filters-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 8px;
-            align-items: end;
-        }
-
-        .filter-group {
             display: flex;
-            flex-direction: column;
-        }
-
-        .filter-group label {
-            font-size: 11px;
-            font-weight: bold;
-            margin-bottom: 2px;
-            color: #2c3e50;
-        }
-
-        .filter-select, .filter-input {
-            padding: 4px 6px;
-            font-size: 12px;
-            border: 1px solid #bdc3c7;
-            border-radius: 3px;
-            background: white;
-        }
-
-        .age-inputs {
-            display: flex;
-            gap: 4px;
-        }
-
-        .age-inputs input {
-            width: 50px;
-            text-align: center;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 6px;
-        }
-
-        .btn {
-            padding: 4px 10px;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .clear-btn {
-            background: #e74c3c;
-            color: white;
-        }
-
-        .clear-btn:hover {
-            background: #c0392b;
-        }
-
-        .export-btn {
-            background: #27ae60;
-            color: white;
-        }
-
-        .export-btn:hover {
-            background: #229954;
-        }
-
-        .table-container {
-            flex: 1;
-            overflow: auto;
-            background: white;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
             position: relative;
         }
 
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 12px;
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
         }
 
-        .data-table th {
-            background: #34495e;
-            color: white;
-            padding: 8px 6px;
-            text-align: left;
+        .logo h1 {
+            color: var(--primary-color);
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .logo p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .stats {
+            background: var(--background);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .stat-value {
             font-weight: bold;
-            border-right: 1px solid #2c3e50;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            font-size: 11px;
-            white-space: nowrap;
+            color: var(--text-primary);
         }
 
-        .data-table td {
-            padding: 6px 6px;
-            border-bottom: 1px solid #ecf0f1;
-            border-right: 1px solid #ecf0f1;
-            vertical-align: top;
-            font-size: 12px;
+        .filters {
+            margin-bottom: 20px;
         }
 
-        .data-table tr:nth-child(even) {
-            background: #f8f9fa;
+        .filter-group {
+            margin-bottom: 15px;
         }
 
-        .data-table tr:hover {
-            background: #e8f4fd;
-        }
-
-        .name-cell {
-            font-weight: bold;
-            color: #2c3e50;
-            min-width: 140px;
-            max-width: 140px;
-        }
-
-        .id-cell {
-            font-family: monospace;
-            color: #7f8c8d;
-            font-size: 10px;
-        }
-
-        .contact-cell {
-            min-width: 110px;
-            max-width: 110px;
-        }
-
-        .contact-link {
-            color: #3498db;
-            text-decoration: none;
+        .filter-label {
             display: block;
-            margin: 1px 0;
-            font-size: 11px;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 14px;
         }
 
-        .contact-link:hover {
+        .filter-input, .filter-select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        .filter-input:focus, .filter-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+        }
+
+        .age-range {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .age-input {
+            flex: 1;
+            padding: 6px 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .clear-filters {
+            width: 100%;
+            padding: 10px;
+            background: var(--text-secondary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+
+        .clear-filters:hover {
+            background: var(--text-primary);
+        }
+
+        .profile-card {
+            width: 400px;
+            height: 600px;
+            background: var(--card-background);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .profile-header {
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .profile-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: bold;
+            color: white;
+            border: 4px solid rgba(255,255,255,0.3);
+        }
+
+        .profile-content {
+            padding: 30px 25px;
+            height: calc(100% - 200px);
+            overflow-y: auto;
+        }
+
+        .profile-name {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+            text-align: center;
+        }
+
+        .profile-basic {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .profile-section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 4px;
+        }
+
+        .section-content {
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--text-primary);
+        }
+
+        .profile-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 15px;
+        }
+
+        .tag {
+            background: var(--background);
+            color: var(--text-secondary);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .contact-info {
+            background: var(--background);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 6px;
+            font-size: 13px;
+        }
+
+        .contact-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .contact-item a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .contact-item a:hover {
             text-decoration: underline;
         }
 
-        .profession-cell {
-            min-width: 160px;
-            max-width: 160px;
-            font-size: 11px;
-        }
-
-        .location-cell {
-            min-width: 100px;
-            max-width: 100px;
-            font-size: 11px;
-        }
-
-        .preferences-cell {
-            min-width: 300px;
-            max-width: 300px;
-            font-size: 11px;
-            line-height: 1.3;
-            max-height: 60px;
-            overflow-y: auto;
-            padding: 4px;
-        }
-
-        .preferences-cell::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .preferences-cell::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-
-        .preferences-cell::-webkit-scrollbar-thumb {
-            background: #bdc3c7;
-            border-radius: 2px;
-        }
-
-        .tag-cell {
-            text-align: center;
-            min-width: 80px;
-            max-width: 80px;
-        }
-
-        .tag-buttons {
+        .navigation {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
-            gap: 2px;
-            justify-content: center;
+            gap: 15px;
         }
 
-        .tag-btn {
-            width: 20px;
-            height: 20px;
+        .nav-button {
+            width: 60px;
+            height: 60px;
             border: none;
-            border-radius: 2px;
+            border-radius: 50%;
+            font-size: 24px;
             cursor: pointer;
-            font-size: 10px;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
-        .tag-btn.like {
-            background: #27ae60;
+        .btn-reject {
+            background: var(--danger-color);
             color: white;
         }
 
-        .tag-btn.maybe {
-            background: #f39c12;
+        .btn-maybe {
+            background: var(--warning-color);
             color: white;
         }
 
-        .tag-btn.reject {
-            background: #e74c3c;
+        .btn-like {
+            background: var(--success-color);
             color: white;
         }
 
-        .tag-btn:not(.active) {
-            background: #ecf0f1;
-            color: #95a5a6;
+        .nav-button:hover {
+            transform: scale(1.1);
         }
 
-        .tag-btn:hover {
-            opacity: 0.8;
+        .nav-button:active {
+            transform: scale(0.95);
         }
 
-        .source-badge {
-            display: inline-block;
-            padding: 1px 4px;
-            border-radius: 2px;
-            font-size: 9px;
-            font-weight: bold;
-            margin-top: 1px;
-        }
-
-        .source-pdf {
-            background: #e8f5e8;
-            color: #27ae60;
-        }
-
-        .source-matdb {
-            background: #fdf2e9;
-            color: #e67e22;
-        }
-
-        .pagination {
-            background: #ecf0f1;
-            padding: 8px 15px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            border-top: 1px solid #bdc3c7;
-            flex-shrink: 0;
-        }
-
-        .pagination button {
-            padding: 4px 12px;
-            border: 1px solid #bdc3c7;
-            background: white;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
-        .pagination button:hover:not(:disabled) {
-            background: #3498db;
+        .profile-counter {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.7);
             color: white;
-            border-color: #3498db;
+            padding: 8px 12px;
+            border-radius: 15px;
+            font-size: 14px;
         }
 
-        .pagination button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .pagination-info {
-            margin: 0 15px;
-            font-weight: bold;
-            font-size: 12px;
-        }
-
-        .no-results {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 200px;
-            color: #7f8c8d;
-            font-size: 16px;
-        }
-
-        .loading {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 200px;
-            font-size: 16px;
-            color: #7f8c8d;
-        }
-
-        .age-cell, .height-cell {
+        .no-profiles {
             text-align: center;
-            font-weight: bold;
-            min-width: 40px;
-            max-width: 40px;
+            color: var(--text-secondary);
+            font-size: 18px;
+            background: var(--card-background);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
-        .income-cell {
+        .keyboard-hints {
+            position: absolute;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .tagged-status {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .tagged-like {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .tagged-maybe {
+            background: var(--warning-color);
+            color: white;
+        }
+
+        .tagged-reject {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                max-height: 40vh;
+                order: 2;
+            }
+            
+            .main-content {
+                order: 1;
+                min-height: 60vh;
+            }
+            
+            .profile-card {
+                width: 350px;
+                height: 550px;
+            }
+            
+            .navigation {
+                bottom: 20px;
+            }
+            
+            .keyboard-hints {
+                display: none;
+            }
+        }
+
+        .tagged-profiles-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
             font-weight: 500;
-            min-width: 80px;
-            max-width: 80px;
-            font-size: 11px;
+            margin-bottom: 20px;
+            transition: background-color 0.2s;
         }
 
-        .community-cell {
-            min-width: 90px;
-            max-width: 90px;
-            font-size: 11px;
+        .tagged-profiles-btn:hover {
+            background: var(--secondary-color);
         }
 
-        .marital-cell {
-            min-width: 80px;
-            max-width: 80px;
-            font-size: 11px;
-        }
-
-        .education-cell {
-            min-width: 120px;
-            max-width: 120px;
-            font-size: 11px;
-        }
-
-        .highlight {
-            background-color: #fff3cd !important;
-            font-weight: bold;
-        }
-
-        /* Ensure table fits in viewport */
-        .data-table {
-            table-layout: fixed;
-        }
-
-        /* Loading state */
-        .loading-overlay {
+        .modal {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(255, 255, 255, 0.9);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
             z-index: 1000;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            width: 90%;
+            max-width: 800px;
+            height: 80%;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 20px;
+            height: calc(100% - 80px);
+            overflow-y: auto;
+        }
+
+        .tagged-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .tagged-item {
+            background: var(--background);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .tagged-item.like {
+            border-left-color: var(--success-color);
+        }
+
+        .tagged-item.maybe {
+            border-left-color: var(--warning-color);
+        }
+
+        .tagged-item.reject {
+            border-left-color: var(--danger-color);
         }
     </style>
 </head>
 <body>
     <div class="app-container">
-        <!-- Header -->
-        <div class="header">
-            <div class="title">Matrimony Database</div>
-            <div class="stats">
-                <span>Total: <strong id="totalCount">-</strong></span>
-                <span>Showing: <strong id="filteredCount">-</strong></span>
-                <span style="color: #27ae60;">❤️ <strong id="likedCount">0</strong></span>
-                <span style="color: #f39c12;">⭐ <strong id="maybeCount">0</strong></span>
-                <span style="color: #e74c3c;">❌ <strong id="rejectedCount">0</strong></span>
+        <div class="sidebar">
+            <div class="logo">
+                <h1>MatchFlow</h1>
+                <p>Find Your Perfect Match</p>
             </div>
-        </div>
 
-        <!-- Controls -->
-        <div class="controls">
-            <div class="search-row">
-                <input type="text" class="search-input" id="searchInput" 
-                       placeholder="Search by name, profession, location, phone, email, preferences, family details...">
-            </div>
-            
-            <div class="filters-row">
-                <div class="filter-group">
-                    <label>Source</label>
-                    <select class="filter-select" id="sourceFilter">
-                        <option value="">All Sources</option>
-                    </select>
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-label">Total Profiles:</span>
+                    <span class="stat-value" id="totalProfiles">-</span>
                 </div>
-                
+                <div class="stat-item">
+                    <span class="stat-label">Filtered:</span>
+                    <span class="stat-value" id="filteredProfiles">-</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Liked:</span>
+                    <span class="stat-value" id="likedCount">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Maybe:</span>
+                    <span class="stat-value" id="maybeCount">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Rejected:</span>
+                    <span class="stat-value" id="rejectedCount">0</span>
+                </div>
+            </div>
+
+            <button class="tagged-profiles-btn" onclick="showTaggedProfiles()">
+                View Tagged Profiles
+            </button>
+
+            <div class="filters">
                 <div class="filter-group">
-                    <label>Gender</label>
+                    <label class="filter-label">Search</label>
+                    <input type="text" class="filter-input" id="searchInput" placeholder="Search by name, profession, location...">
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Gender</label>
                     <select class="filter-select" id="genderFilter">
-                        <option value="">All</option>
+                        <option value="">All Genders</option>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
                     </select>
                 </div>
-                
+
                 <div class="filter-group">
-                    <label>Age Range</label>
-                    <div class="age-inputs">
-                        <input type="number" class="filter-input" id="minAge" placeholder="Min" min="18" max="80">
-                        <span style="align-self: center;">-</span>
-                        <input type="number" class="filter-input" id="maxAge" placeholder="Max" min="18" max="80">
+                    <label class="filter-label">Age Range</label>
+                    <div class="age-range">
+                        <input type="number" class="age-input" id="minAge" placeholder="Min" min="18" max="100">
+                        <span>to</span>
+                        <input type="number" class="age-input" id="maxAge" placeholder="Max" min="18" max="100">
                     </div>
                 </div>
-                
+
                 <div class="filter-group">
-                    <label>Country</label>
+                    <label class="filter-label">Country</label>
                     <select class="filter-select" id="countryFilter">
                         <option value="">All Countries</option>
                     </select>
                 </div>
-                
+
                 <div class="filter-group">
-                    <label>City</label>
-                    <select class="filter-select" id="cityFilter">
-                        <option value="">All Cities</option>
-                    </select>
-                </div>
-                
-                <div class="filter-group">
-                    <label>Community</label>
-                    <select class="filter-select" id="communityFilter">
-                        <option value="">All Communities</option>
-                    </select>
-                </div>
-                
-                <div class="filter-group">
-                    <label>Marital Status</label>
+                    <label class="filter-label">Marital Status</label>
                     <select class="filter-select" id="maritalFilter">
                         <option value="">All Status</option>
                         <option value="Single">Single</option>
@@ -508,400 +577,351 @@
                         <option value="Widowed">Widowed</option>
                     </select>
                 </div>
-                
+
                 <div class="filter-group">
-                    <label>Income Range</label>
-                    <select class="filter-select" id="incomeFilter">
-                        <option value="">All Income</option>
-                        <option value="0-5">0-5 Lakhs</option>
-                        <option value="5-10">5-10 Lakhs</option>
-                        <option value="10-20">10-20 Lakhs</option>
-                        <option value="20-50">20-50 Lakhs</option>
-                        <option value="50+">50+ Lakhs</option>
-                        <option value="USD">USD Income</option>
+                    <label class="filter-label">Community</label>
+                    <select class="filter-select" id="communityFilter">
+                        <option value="">All Communities</option>
                     </select>
                 </div>
-                
-                <div class="filter-group">
-                    <label>Tagged</label>
-                    <select class="filter-select" id="tagFilter">
-                        <option value="">All</option>
-                        <option value="like">❤️ Liked</option>
-                        <option value="maybe">⭐ Maybe</option>
-                        <option value="reject">❌ Rejected</option>
-                        <option value="untagged">Untagged</option>
-                    </select>
-                </div>
-                
-                <div class="filter-group action-buttons">
-                    <label>&nbsp;</label>
-                    <div style="display: flex; gap: 4px;">
-                        <button class="btn clear-btn" onclick="clearAllFilters()">Clear</button>
-                        <button class="btn export-btn" onclick="exportToCSV()">Export</button>
-                    </div>
-                </div>
+
+                <button class="clear-filters" onclick="clearFilters()">Clear All Filters</button>
             </div>
         </div>
 
-        <!-- Main Content -->
-        <div id="loadingMessage" class="loading-overlay">
-            Loading matrimony database...
-        </div>
-        
-        <div id="tableContainer" class="table-container" style="display: none;">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Name & ID</th>
-                        <th>Age</th>
-                        <th>Gender</th>
-                        <th>Contact</th>
-                        <th>Location</th>
-                        <th>Height</th>
-                        <th>Profession</th>
-                        <th>Education</th>
-                        <th>Income</th>
-                        <th>Community</th>
-                        <th>Marital</th>
-                        <th>Partner Preferences</th>
-                        <th>Tags</th>
-                    </tr>
-                </thead>
-                <tbody id="profilesTableBody">
-                    <!-- Data will be loaded here -->
-                </tbody>
-            </table>
-        </div>
+        <div class="main-content">
+            <div class="profile-card" id="profileCard">
+                <div class="no-profiles">
+                    Loading profiles...
+                </div>
+            </div>
 
-        <div id="noResults" class="no-results" style="display: none;">
-            <div>
-                <h3>No profiles found</h3>
-                <p>Try adjusting your search terms or filters</p>
+            <div class="profile-counter" id="profileCounter">
+                1 / 1164
+            </div>
+
+            <div class="navigation">
+                <button class="nav-button btn-reject" onclick="tagProfile('reject')" title="Reject (1)">
+                    ❌
+                </button>
+                <button class="nav-button btn-maybe" onclick="tagProfile('maybe')" title="Maybe (2)">
+                    ⭐
+                </button>
+                <button class="nav-button btn-like" onclick="tagProfile('like')" title="Like (3)">
+                    ❤️
+                </button>
+            </div>
+
+            <div class="keyboard-hints">
+                ← → Navigate | 1 Reject | 2 Maybe | 3 Like
             </div>
         </div>
+    </div>
 
-        <!-- Pagination -->
-        <div id="pagination" class="pagination" style="display: none;">
-            <button id="prevPage">← Prev</button>
-            <span class="pagination-info" id="pageInfo">Page 1 of 1</span>
-            <button id="nextPage">Next →</button>
-            <select id="rowsPerPage" class="filter-select">
-                <option value="50">50 rows</option>
-                <option value="100" selected>100 rows</option>
-                <option value="200">200 rows</option>
-                <option value="all">Show All</option>
-            </select>
+    <!-- Tagged Profiles Modal -->
+    <div class="modal" id="taggedModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Tagged Profiles</h2>
+                <button class="close-modal" onclick="closeTaggedProfiles()">×</button>
+            </div>
+            <div class="modal-body" id="taggedModalBody">
+                <!-- Tagged profiles will be loaded here -->
+            </div>
         </div>
     </div>
 
     <script>
         let allProfiles = [];
         let filteredProfiles = [];
+        let currentIndex = 0;
         let tags = JSON.parse(localStorage.getItem('matrimony-tags') || '{}');
-        let currentPage = 1;
-        let rowsPerPage = 100;
 
-        // Initialize the application
-        async function initApp() {
+        // Load profiles from JSON file
+        async function loadProfiles() {
             try {
-                await loadProfiles();
+                const response = await fetch('data/profiles.json');
+                allProfiles = await response.json();
+                filteredProfiles = [...allProfiles];
+                
+                // Populate filter options
                 populateFilterOptions();
-                setupEventListeners();
-                applyFilters();
                 updateStats();
-                showContent();
+                displayProfile();
+                setupEventListeners();
+                
+                console.log(`Loaded ${allProfiles.length} profiles`);
             } catch (error) {
-                console.error('Failed to initialize:', error);
-                document.getElementById('loadingMessage').innerHTML = 'Failed to load profiles. Please refresh the page.';
+                console.error('Error loading profiles:', error);
+                document.getElementById('profileCard').innerHTML = 
+                    '<div class="no-profiles">Failed to load profiles. Please check your data file.</div>';
             }
         }
 
-        // Load profiles from JSON
-        async function loadProfiles() {
-            const response = await fetch('data/profiles.json');
-            allProfiles = await response.json();
-            console.log(`Loaded ${allProfiles.length} profiles`);
-        }
-
-        function showContent() {
-            document.getElementById('loadingMessage').style.display = 'none';
-            document.getElementById('tableContainer').style.display = 'block';
-            document.getElementById('pagination').style.display = 'flex';
-        }
-
-        // Populate filter dropdowns
         function populateFilterOptions() {
-            // Source files
-            const sources = [...new Set(allProfiles.map(p => p.source_system).filter(Boolean))].sort();
-            populateSelect('sourceFilter', sources);
-
             // Countries
             const countries = [...new Set(allProfiles.map(p => p.country).filter(Boolean))].sort();
-            populateSelect('countryFilter', countries);
-
-            // Cities
-            const cities = [...new Set(allProfiles.map(p => p.city).filter(Boolean))].sort();
-            populateSelect('cityFilter', cities);
+            const countrySelect = document.getElementById('countryFilter');
+            countries.forEach(country => {
+                const option = document.createElement('option');
+                option.value = country;
+                option.textContent = country;
+                countrySelect.appendChild(option);
+            });
 
             // Communities
             const communities = [...new Set(allProfiles.map(p => p.community_sect).filter(Boolean))].sort();
-            populateSelect('communityFilter', communities);
-        }
-
-        function populateSelect(selectId, options) {
-            const select = document.getElementById(selectId);
-            options.forEach(option => {
-                const optElement = document.createElement('option');
-                optElement.value = option;
-                optElement.textContent = option;
-                select.appendChild(optElement);
+            const communitySelect = document.getElementById('communityFilter');
+            communities.forEach(community => {
+                const option = document.createElement('option');
+                option.value = community;
+                option.textContent = community;
+                communitySelect.appendChild(option);
             });
         }
 
-        // Setup event listeners
         function setupEventListeners() {
-            document.getElementById('searchInput').addEventListener('input', debounce(applyFilters, 300));
-            document.getElementById('sourceFilter').addEventListener('change', applyFilters);
+            // Search and filter inputs
+            document.getElementById('searchInput').addEventListener('input', applyFilters);
             document.getElementById('genderFilter').addEventListener('change', applyFilters);
-            document.getElementById('minAge').addEventListener('input', debounce(applyFilters, 300));
-            document.getElementById('maxAge').addEventListener('input', debounce(applyFilters, 300));
+            document.getElementById('minAge').addEventListener('input', applyFilters);
+            document.getElementById('maxAge').addEventListener('input', applyFilters);
             document.getElementById('countryFilter').addEventListener('change', applyFilters);
-            document.getElementById('cityFilter').addEventListener('change', applyFilters);
-            document.getElementById('communityFilter').addEventListener('change', applyFilters);
             document.getElementById('maritalFilter').addEventListener('change', applyFilters);
-            document.getElementById('incomeFilter').addEventListener('change', applyFilters);
-            document.getElementById('tagFilter').addEventListener('change', applyFilters);
-            document.getElementById('rowsPerPage').addEventListener('change', changeRowsPerPage);
+            document.getElementById('communityFilter').addEventListener('change', applyFilters);
+
+            // Keyboard navigation
+            document.addEventListener('keydown', handleKeyPress);
+
+            // Touch gestures for mobile
+            let startX = 0;
+            const profileCard = document.getElementById('profileCard');
             
-            document.getElementById('prevPage').addEventListener('click', () => changePage(-1));
-            document.getElementById('nextPage').addEventListener('click', () => changePage(1));
+            profileCard.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+            });
+
+            profileCard.addEventListener('touchend', (e) => {
+                const endX = e.changedTouches[0].clientX;
+                const diff = startX - endX;
+                
+                if (Math.abs(diff) > 100) { // Minimum swipe distance
+                    if (diff > 0) {
+                        nextProfile();
+                    } else {
+                        previousProfile();
+                    }
+                }
+            });
         }
 
-        function debounce(func, wait) {
-            let timeout;
-            return function executedFunction(...args) {
-                const later = () => {
-                    clearTimeout(timeout);
-                    func(...args);
-                };
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-            };
+        function handleKeyPress(e) {
+            switch(e.key) {
+                case 'ArrowLeft':
+                    previousProfile();
+                    break;
+                case 'ArrowRight':
+                    nextProfile();
+                    break;
+                case '1':
+                    tagProfile('reject');
+                    break;
+                case '2':
+                    tagProfile('maybe');
+                    break;
+                case '3':
+                    tagProfile('like');
+                    break;
+            }
         }
 
-        // Apply all filters
         function applyFilters() {
             const search = document.getElementById('searchInput').value.toLowerCase();
-            const source = document.getElementById('sourceFilter').value;
             const gender = document.getElementById('genderFilter').value;
             const minAge = parseInt(document.getElementById('minAge').value) || 0;
             const maxAge = parseInt(document.getElementById('maxAge').value) || 999;
             const country = document.getElementById('countryFilter').value;
-            const city = document.getElementById('cityFilter').value;
-            const community = document.getElementById('communityFilter').value;
             const marital = document.getElementById('maritalFilter').value;
-            const income = document.getElementById('incomeFilter').value;
-            const tagStatus = document.getElementById('tagFilter').value;
+            const community = document.getElementById('communityFilter').value;
 
             filteredProfiles = allProfiles.filter(profile => {
-                // Search filter - searches across all important fields
-                if (search && !searchAllFields(profile, search)) return false;
-                
-                // Source filter
-                if (source && profile.source_system !== source) return false;
+                // Search filter
+                if (search && !searchProfile(profile, search)) return false;
                 
                 // Gender filter
                 if (gender && profile.gender !== gender) return false;
                 
-                // Age range filter
+                // Age filter
                 if (profile.age && (profile.age < minAge || profile.age > maxAge)) return false;
                 
                 // Country filter
                 if (country && profile.country !== country) return false;
                 
-                // City filter
-                if (city && profile.city !== city) return false;
+                // Marital status filter
+                if (marital && profile.marital_status !== marital) return false;
                 
                 // Community filter
                 if (community && profile.community_sect !== community) return false;
                 
-                // Marital status filter
-                if (marital && profile.marital_status !== marital) return false;
-                
-                // Income filter
-                if (income && !matchesIncomeRange(profile.annual_income, income)) return false;
-                
-                // Tag filter
-                if (tagStatus) {
-                    const profileTag = tags[profile.review_id];
-                    if (tagStatus === 'untagged' && profileTag) return false;
-                    if (tagStatus !== 'untagged' && profileTag !== tagStatus) return false;
-                }
-                
                 return true;
             });
 
-            currentPage = 1;
-            displayProfiles();
+            currentIndex = 0;
             updateStats();
-            updatePagination();
+            displayProfile();
         }
 
-        // Search across all relevant fields
-        function searchAllFields(profile, searchTerm) {
-            const searchableText = [
-                profile.full_name,
-                profile.phone_primary,
-                profile.phone_secondary,
-                profile.email,
-                profile.profession_job,
-                profile.qualification_education,
-                profile.city,
-                profile.country,
-                profile.community_sect,
-                profile.partner_preferences,
-                profile.expectations,
-                profile.additional_details,
-                profile.father_name,
-                profile.mother_name,
-                profile.annual_income,
-                profile.work_location,
-                profile.address,
-                profile.marital_status,
-                profile.gothram_gotra,
-                profile.star_nakshatra,
-                profile.rasi_sign
-            ].filter(Boolean).join(' ').toLowerCase();
+        function searchProfile(profile, search) {
+            const searchableFields = [
+                'full_name', 'profession_job', 'qualification_education', 
+                'city', 'country', 'community_sect', 'partner_preferences'
+            ];
             
-            return searchableText.includes(searchTerm);
+            return searchableFields.some(field => 
+                profile[field] && profile[field].toLowerCase().includes(search)
+            );
         }
 
-        // Check if income matches the selected range
-        function matchesIncomeRange(income, range) {
-            if (!income) return false;
+        function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('genderFilter').value = '';
+            document.getElementById('minAge').value = '';
+            document.getElementById('maxAge').value = '';
+            document.getElementById('countryFilter').value = '';
+            document.getElementById('maritalFilter').value = '';
+            document.getElementById('communityFilter').value = '';
             
-            const incomeStr = income.toLowerCase();
-            const hasNumber = /\d/.test(incomeStr);
-            
-            if (!hasNumber) return false;
-            
-            // Extract numbers from income string
-            const numbers = incomeStr.match(/\d+/g);
-            if (!numbers) return false;
-            
-            const firstNumber = parseInt(numbers[0]);
-            
-            switch(range) {
-                case '0-5':
-                    return firstNumber >= 0 && firstNumber <= 5;
-                case '5-10':
-                    return firstNumber > 5 && firstNumber <= 10;
-                case '10-20':
-                    return firstNumber > 10 && firstNumber <= 20;
-                case '20-50':
-                    return firstNumber > 20 && firstNumber <= 50;
-                case '50+':
-                    return firstNumber > 50;
-                case 'USD':
-                    return incomeStr.includes('usd') || incomeStr.includes('$') || incomeStr.includes('dollar');
-                default:
-                    return true;
-            }
+            applyFilters();
         }
 
-        // Display profiles in table
-        function displayProfiles() {
-            const tbody = document.getElementById('profilesTableBody');
-            const noResults = document.getElementById('noResults');
-            const tableContainer = document.getElementById('tableContainer');
+        function displayProfile() {
+            const profileCard = document.getElementById('profileCard');
             
             if (filteredProfiles.length === 0) {
-                tableContainer.style.display = 'none';
-                noResults.style.display = 'flex';
+                profileCard.innerHTML = '<div class="no-profiles">No profiles match your filters.</div>';
+                document.getElementById('profileCounter').textContent = '0 / 0';
                 return;
             }
 
-            tableContainer.style.display = 'block';
-            noResults.style.display = 'none';
-
-            // Calculate pagination
-            const startIndex = (currentPage - 1) * rowsPerPage;
-            const endIndex = rowsPerPage === 'all' ? filteredProfiles.length : startIndex + parseInt(rowsPerPage);
-            const profilesToShow = filteredProfiles.slice(startIndex, endIndex);
-
-            tbody.innerHTML = profilesToShow.map(profile => createTableRow(profile)).join('');
-        }
-
-        // Create table row for profile
-        function createTableRow(profile) {
-            const tag = tags[profile.review_id];
-            const sourceBadge = profile.source_system === 'PDF_RKMS' ? 
-                '<div class="source-badge source-pdf">PDF</div>' : 
-                '<div class="source-badge source-matdb">MATDB</div>';
-
-            return `
-                <tr>
-                    <td class="name-cell">
-                        <div>${profile.full_name || 'Name not provided'}</div>
-                        <div class="id-cell">${profile.review_id}</div>
-                        ${sourceBadge}
-                    </td>
-                    <td class="age-cell">${profile.age || '-'}</td>
-                    <td>${profile.gender || '-'}</td>
-                    <td class="contact-cell">
-                        ${profile.phone_primary ? `<a href="tel:${profile.phone_primary}" class="contact-link">📱 ${profile.phone_primary}</a>` : ''}
-                        ${profile.email ? `<a href="mailto:${profile.email}" class="contact-link">✉️ ${profile.email}</a>` : ''}
-                    </td>
-                    <td class="location-cell">
-                        <div>${profile.city || ''}</div>
-                        <div>${profile.country || ''}</div>
-                    </td>
-                    <td class="height-cell">${profile.height_display || '-'}</td>
-                    <td class="profession-cell">
-                        <div>${profile.profession_job || '-'}</div>
-                        ${profile.work_location ? `<div style="color: #7f8c8d; font-size: 10px;">@ ${profile.work_location}</div>` : ''}
-                    </td>
-                    <td class="education-cell">${profile.qualification_education || '-'}</td>
-                    <td class="income-cell">${profile.annual_income || '-'}</td>
-                    <td class="community-cell">${profile.community_sect || '-'}</td>
-                    <td class="marital-cell">${profile.marital_status || '-'}</td>
-                    <td class="preferences-cell">
-                        ${profile.partner_preferences || profile.expectations || profile.additional_details || '-'}
-                    </td>
-                    <td class="tag-cell">
-                        <div class="tag-buttons">
-                            <button class="tag-btn like ${tag === 'like' ? 'active' : ''}"
-                                    onclick="tagProfile('${profile.review_id}', 'like')"
-                                    title="Like">❤️</button>
-                            <button class="tag-btn maybe ${tag === 'maybe' ? 'active' : ''}"
-                                    onclick="tagProfile('${profile.review_id}', 'maybe')"
-                                    title="Maybe">⭐</button>
-                            <button class="tag-btn reject ${tag === 'reject' ? 'active' : ''}"
-                                    onclick="tagProfile('${profile.review_id}', 'reject')"
-                                    title="Reject">❌</button>
-                        </div>
-                    </td>
-                </tr>
-            `;
-        }
-
-        // Tag a profile
-        function tagProfile(reviewId, tag) {
-            if (tags[reviewId] === tag) {
-                delete tags[reviewId];
-            } else {
-                tags[reviewId] = tag;
+            if (currentIndex >= filteredProfiles.length) {
+                currentIndex = 0;
             }
+
+            const profile = filteredProfiles[currentIndex];
+            const profileTag = tags[profile.review_id];
             
-            localStorage.setItem('matrimony-tags', JSON.stringify(tags));
-            updateStats();
-            displayProfiles();
+            const taggedStatusHTML = profileTag ? 
+                `<div class="tagged-status tagged-${profileTag}">
+                    ${profileTag === 'like' ? '❤️ Liked' : profileTag === 'maybe' ? '⭐ Maybe' : '❌ Rejected'}
+                </div>` : '';
+
+            profileCard.innerHTML = `
+                ${taggedStatusHTML}
+                <div class="profile-header">
+                    <div class="profile-image">
+                        ${getInitials(profile.full_name)}
+                    </div>
+                </div>
+                <div class="profile-content">
+                    <h2 class="profile-name">${profile.full_name || 'Name not provided'}</h2>
+                    <div class="profile-basic">
+                        ${profile.age ? `${profile.age} years` : ''} • 
+                        ${profile.city || profile.country || 'Location not specified'}
+                        ${profile.profession_job ? ` • ${profile.profession_job}` : ''}
+                    </div>
+                    
+                    ${profile.qualification_education ? `
+                        <div class="profile-section">
+                            <div class="section-title">Education</div>
+                            <div class="section-content">${profile.qualification_education}</div>
+                        </div>
+                    ` : ''}
+                    
+                    ${profile.height_display || profile.annual_income ? `
+                        <div class="profile-section">
+                            <div class="section-title">Details</div>
+                            <div class="profile-tags">
+                                ${profile.height_display ? `<span class="tag">Height: ${profile.height_display}</span>` : ''}
+                                ${profile.annual_income ? `<span class="tag">Income: ${profile.annual_income}</span>` : ''}
+                                ${profile.marital_status ? `<span class="tag">${profile.marital_status}</span>` : ''}
+                            </div>
+                        </div>
+                    ` : ''}
+                    
+                    ${profile.community_sect ? `
+                        <div class="profile-section">
+                            <div class="section-title">Community</div>
+                            <div class="section-content">${profile.community_sect}</div>
+                        </div>
+                    ` : ''}
+                    
+                    ${profile.partner_preferences ? `
+                        <div class="profile-section">
+                            <div class="section-title">Looking For</div>
+                            <div class="section-content">${profile.partner_preferences}</div>
+                        </div>
+                    ` : ''}
+                    
+                    ${(profile.phone_primary || profile.email) ? `
+                        <div class="contact-info">
+                            <div class="section-title">Contact Information</div>
+                            ${profile.phone_primary ? `
+                                <div class="contact-item">
+                                    📞 <a href="tel:${profile.phone_primary}">${profile.phone_primary}</a>
+                                </div>
+                            ` : ''}
+                            ${profile.email ? `
+                                <div class="contact-item">
+                                    ✉️ <a href="mailto:${profile.email}">${profile.email}</a>
+                                </div>
+                            ` : ''}
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+
+            document.getElementById('profileCounter').textContent = 
+                `${currentIndex + 1} / ${filteredProfiles.length}`;
         }
 
-        // Update statistics
+        function getInitials(name) {
+            if (!name) return '?';
+            return name.split(' ')
+                .map(word => word.charAt(0))
+                .join('')
+                .toUpperCase()
+                .substring(0, 2);
+        }
+
+        function nextProfile() {
+            currentIndex = (currentIndex + 1) % filteredProfiles.length;
+            displayProfile();
+        }
+
+        function previousProfile() {
+            currentIndex = currentIndex === 0 ? filteredProfiles.length - 1 : currentIndex - 1;
+            displayProfile();
+        }
+
+        function tagProfile(tag) {
+            if (filteredProfiles.length === 0) return;
+            
+            const profile = filteredProfiles[currentIndex];
+            tags[profile.review_id] = tag;
+            localStorage.setItem('matrimony-tags', JSON.stringify(tags));
+            
+            updateStats();
+            displayProfile(); // Refresh to show tag status
+            
+            // Automatically move to next profile after tagging
+            setTimeout(() => {
+                nextProfile();
+            }, 500);
+        }
+
         function updateStats() {
-            document.getElementById('totalCount').textContent = allProfiles.length;
-            document.getElementById('filteredCount').textContent = filteredProfiles.length;
+            document.getElementById('totalProfiles').textContent = allProfiles.length;
+            document.getElementById('filteredProfiles').textContent = filteredProfiles.length;
             
             const tagCounts = { like: 0, maybe: 0, reject: 0 };
             Object.values(tags).forEach(tag => {
@@ -913,111 +933,76 @@
             document.getElementById('rejectedCount').textContent = tagCounts.reject;
         }
 
-        // Pagination functions
-        function updatePagination() {
-            const totalItems = filteredProfiles.length;
-            const totalPages = rowsPerPage === 'all' ? 1 : Math.ceil(totalItems / rowsPerPage);
+        function showTaggedProfiles() {
+            const modal = document.getElementById('taggedModal');
+            const modalBody = document.getElementById('taggedModalBody');
             
-            document.getElementById('prevPage').disabled = currentPage === 1;
-            document.getElementById('nextPage').disabled = currentPage === totalPages || totalPages === 0;
+            const taggedProfiles = allProfiles.filter(profile => tags[profile.review_id]);
             
-            if (rowsPerPage === 'all') {
-                document.getElementById('pageInfo').textContent = `Showing all ${totalItems} profiles`;
+            if (taggedProfiles.length === 0) {
+                modalBody.innerHTML = '<div class="no-profiles">No profiles tagged yet.</div>';
             } else {
-                const startItem = (currentPage - 1) * rowsPerPage + 1;
-                const endItem = Math.min(currentPage * rowsPerPage, totalItems);
-                document.getElementById('pageInfo').textContent = `${startItem}-${endItem} of ${totalItems}`;
+                const groupedTags = { like: [], maybe: [], reject: [] };
+                taggedProfiles.forEach(profile => {
+                    const tag = tags[profile.review_id];
+                    if (groupedTags[tag]) groupedTags[tag].push(profile);
+                });
+                
+                let html = '';
+                
+                if (groupedTags.like.length > 0) {
+                    html += '<h3 style="color: var(--success-color); margin-bottom: 15px;">❤️ Liked Profiles</h3>';
+                    groupedTags.like.forEach(profile => {
+                        html += createTaggedItem(profile, 'like');
+                    });
+                }
+                
+                if (groupedTags.maybe.length > 0) {
+                    html += '<h3 style="color: var(--warning-color); margin-bottom: 15px; margin-top: 30px;">⭐ Maybe Profiles</h3>';
+                    groupedTags.maybe.forEach(profile => {
+                        html += createTaggedItem(profile, 'maybe');
+                    });
+                }
+                
+                if (groupedTags.reject.length > 0) {
+                    html += '<h3 style="color: var(--danger-color); margin-bottom: 15px; margin-top: 30px;">❌ Rejected Profiles</h3>';
+                    groupedTags.reject.forEach(profile => {
+                        html += createTaggedItem(profile, 'reject');
+                    });
+                }
+                
+                modalBody.innerHTML = `<div class="tagged-list">${html}</div>`;
+            }
+            
+            modal.style.display = 'block';
+        }
+
+        function createTaggedItem(profile, tag) {
+            return `
+                <div class="tagged-item ${tag}">
+                    <h4>${profile.full_name || 'Name not provided'}</h4>
+                    <p>${profile.age ? `${profile.age} years` : ''} • ${profile.city || profile.country || 'Location not specified'}</p>
+                    <p><strong>Profession:</strong> ${profile.profession_job || 'Not specified'}</p>
+                    ${profile.phone_primary ? `<p><strong>Phone:</strong> <a href="tel:${profile.phone_primary}">${profile.phone_primary}</a></p>` : ''}
+                    ${profile.email ? `<p><strong>Email:</strong> <a href="mailto:${profile.email}">${profile.email}</a></p>` : ''}
+                </div>
+            `;
+        }
+
+        function closeTaggedProfiles() {
+            document.getElementById('taggedModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('taggedModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
             }
         }
 
-        function changePage(direction) {
-            if (rowsPerPage === 'all') return;
-            
-            const totalPages = Math.ceil(filteredProfiles.length / rowsPerPage);
-            const newPage = currentPage + direction;
-            
-            if (newPage >= 1 && newPage <= totalPages) {
-                currentPage = newPage;
-                displayProfiles();
-                updatePagination();
-                document.querySelector('.table-container').scrollTop = 0;
-            }
-        }
-
-        function changeRowsPerPage() {
-            rowsPerPage = document.getElementById('rowsPerPage').value;
-            if (rowsPerPage !== 'all') {
-                rowsPerPage = parseInt(rowsPerPage);
-            }
-            currentPage = 1;
-            displayProfiles();
-            updatePagination();
-        }
-
-        // Clear all filters
-        function clearAllFilters() {
-            document.getElementById('searchInput').value = '';
-            document.getElementById('sourceFilter').value = '';
-            document.getElementById('genderFilter').value = '';
-            document.getElementById('minAge').value = '';
-            document.getElementById('maxAge').value = '';
-            document.getElementById('countryFilter').value = '';
-            document.getElementById('cityFilter').value = '';
-            document.getElementById('communityFilter').value = '';
-            document.getElementById('maritalFilter').value = '';
-            document.getElementById('incomeFilter').value = '';
-            document.getElementById('tagFilter').value = '';
-            applyFilters();
-        }
-
-        // Export to CSV
-        function exportToCSV() {
-            const headers = [
-                'Name', 'ID', 'Age', 'Gender', 'Phone', 'Email', 'City', 'Country', 
-                'Height', 'Profession', 'Education', 'Income', 'Community', 'Marital Status',
-                'Partner Preferences', 'Father', 'Mother', 'Source', 'Tag'
-            ];
-            
-            const csvData = [
-                headers.join(','),
-                ...filteredProfiles.map(profile => [
-                    `"${profile.full_name || ''}"`,
-                    `"${profile.review_id || ''}"`,
-                    profile.age || '',
-                    `"${profile.gender || ''}"`,
-                    `"${profile.phone_primary || ''}"`,
-                    `"${profile.email || ''}"`,
-                    `"${profile.city || ''}"`,
-                    `"${profile.country || ''}"`,
-                    `"${profile.height_display || ''}"`,
-                    `"${profile.profession_job || ''}"`,
-                    `"${profile.qualification_education || ''}"`,
-                    `"${profile.annual_income || ''}"`,
-                    `"${profile.community_sect || ''}"`,
-                    `"${profile.marital_status || ''}"`,
-                    `"${(profile.partner_preferences || '').replace(/"/g, '""')}"`,
-                    `"${profile.father_name || ''}"`,
-                    `"${profile.mother_name || ''}"`,
-                    `"${profile.source_system || ''}"`,
-                    `"${tags[profile.review_id] || ''}"`
-                ].join(','))
-            ].join('\n');
-            
-            const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            const url = URL.createObjectURL(blob);
-            
-            link.setAttribute('href', url);
-            link.setAttribute('download', 'matrimony_profiles.csv');
-            link.style.visibility = 'hidden';
-            
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-
-        // Initialize when page loads
-        document.addEventListener('DOMContentLoaded', initApp);
+        // Initialize the app
+        loadProfiles();
     </script>
 </body>
 </html>
